@@ -1,0 +1,418 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fonts are loaded via <link> in index.html for better performance across devices */
+
+@layer base {
+  :root {
+    /* Warm cream background */
+    --background: 35 40% 97%;
+    --foreground: 20 30% 15%;
+
+    /* Card - slightly warmer cream */
+    --card: 35 35% 95%;
+    --card-foreground: 20 30% 15%;
+
+    --popover: 35 35% 95%;
+    --popover-foreground: 20 30% 15%;
+
+    /* Primary - Warm Gold */
+    --primary: 35 55% 55%;
+    --primary-foreground: 35 40% 97%;
+
+    /* Secondary - Dark Wine */
+    --secondary: 345 45% 25%;
+    --secondary-foreground: 35 40% 97%;
+
+    /* Muted - Soft Amber */
+    --muted: 35 30% 88%;
+    --muted-foreground: 20 20% 40%;
+
+    /* Accent - Rose Gold */
+    --accent: 15 45% 65%;
+    --accent-foreground: 20 30% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 35 30% 85%;
+    --input: 35 30% 85%;
+    --ring: 35 55% 55%;
+
+    --radius: 0.5rem;
+
+    /* Custom colors for the experience */
+    --gold: 35 55% 55%;
+    --gold-light: 40 60% 75%;
+    --gold-dark: 30 50% 45%;
+    --wine: 345 45% 25%;
+    --wine-light: 345 40% 35%;
+    --wine-dark: 345 50% 18%;
+    --cream: 35 40% 97%;
+    --cream-dark: 35 35% 92%;
+    --amber: 35 50% 70%;
+    --candle-glow: 35 80% 60%;
+    --candle-flame: 25 90% 55%;
+
+    /* Gradients */
+    --gradient-wine: linear-gradient(135deg, hsl(345 45% 25%), hsl(345 50% 18%));
+    --gradient-gold: linear-gradient(135deg, hsl(35 55% 55%), hsl(40 60% 75%));
+    --gradient-warm: linear-gradient(180deg, hsl(35 40% 97%), hsl(35 35% 92%));
+    --gradient-candle: radial-gradient(ellipse at center, hsl(35 80% 60% / 0.3), transparent 70%);
+
+    /* Shadows */
+    --shadow-candle: 0 0 60px hsl(35 80% 60% / 0.4);
+    --shadow-gold: 0 10px 40px hsl(35 55% 55% / 0.3);
+    --shadow-soft: 0 4px 20px hsl(20 30% 15% / 0.08);
+
+    /* Fonts */
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Playfair Display', serif;
+    --font-signature: 'Great Vibes', cursive;
+    --font-handwriting: 'Caveat', cursive;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 345 50% 8%;
+    --foreground: 35 40% 95%;
+
+    --card: 345 45% 12%;
+    --card-foreground: 35 40% 95%;
+
+    --popover: 345 45% 12%;
+    --popover-foreground: 35 40% 95%;
+
+    --primary: 35 55% 55%;
+    --primary-foreground: 345 50% 8%;
+
+    --secondary: 35 35% 85%;
+    --secondary-foreground: 345 50% 8%;
+
+    --muted: 345 40% 18%;
+    --muted-foreground: 35 30% 70%;
+
+    --accent: 15 45% 65%;
+    --accent-foreground: 345 50% 8%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 345 40% 20%;
+    --input: 345 40% 20%;
+    --ring: 35 55% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .font-signature {
+    font-family: var(--font-signature);
+  }
+
+  .font-handwriting {
+    font-family: var(--font-handwriting);
+  }
+
+  .gradient-wine {
+    background: var(--gradient-wine);
+  }
+
+  .gradient-gold {
+    background: var(--gradient-gold);
+  }
+
+  .gradient-warm {
+    background: var(--gradient-warm);
+  }
+
+  .shadow-candle {
+    box-shadow: var(--shadow-candle);
+  }
+
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .glow-candle {
+    filter: drop-shadow(0 0 20px hsl(var(--candle-glow)));
+  }
+
+  /* Candle flame animation */
+  @keyframes flame {
+    0%, 100% {
+      transform: scaleY(1) scaleX(1) translateY(0);
+      opacity: 1;
+    }
+    25% {
+      transform: scaleY(1.05) scaleX(0.95) translateY(-2px);
+      opacity: 0.95;
+    }
+    50% {
+      transform: scaleY(0.95) scaleX(1.02) translateY(-1px);
+      opacity: 1;
+    }
+    75% {
+      transform: scaleY(1.02) scaleX(0.98) translateY(-3px);
+      opacity: 0.97;
+    }
+  }
+
+  @keyframes flame-flicker {
+    0%, 100% {
+      filter: blur(0.5px) brightness(1);
+    }
+    50% {
+      filter: blur(1px) brightness(1.1);
+    }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+  }
+
+  .animate-flame {
+    animation: flame 2s ease-in-out infinite, flame-flicker 3s ease-in-out infinite;
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  /* Typewriter cursor */
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .typewriter-cursor::after {
+    content: '|';
+    animation: blink 1s infinite;
+    color: hsl(var(--gold));
+  }
+
+  /* Ink appear animation */
+  @keyframes ink-appear {
+    from {
+      opacity: 0;
+      filter: blur(4px);
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  .animate-ink {
+    animation: ink-appear 1.5s ease-out forwards;
+  }
+
+  /* Floating animation for candles */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    33% {
+      transform: translateY(-8px) rotate(1deg);
+    }
+    66% {
+      transform: translateY(-4px) rotate(-1deg);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Soft confetti */
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-100vh) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  .confetti-piece {
+    animation: confetti-fall linear infinite;
+  }
+
+  /* Neon signature */
+  @keyframes neon-glow {
+    0%, 100% {
+      text-shadow: 
+        0 0 5px hsl(var(--gold)),
+        0 0 10px hsl(var(--gold)),
+        0 0 20px hsl(var(--gold)),
+        0 0 40px hsl(var(--gold-light));
+    }
+    50% {
+      text-shadow: 
+        0 0 2px hsl(var(--gold)),
+        0 0 5px hsl(var(--gold)),
+        0 0 10px hsl(var(--gold)),
+        0 0 20px hsl(var(--gold-light));
+    }
+  }
+
+  .neon-signature {
+    animation: neon-glow 2s ease-in-out infinite;
+  }
+
+  /* Premium button styles */
+  .btn-chapter {
+    @apply relative overflow-hidden px-8 py-4 rounded-full;
+    @apply font-display text-lg tracking-wide;
+    @apply bg-gradient-to-r from-primary to-accent;
+    @apply text-primary-foreground;
+    @apply border border-primary/30;
+    @apply shadow-gold;
+    @apply transition-all duration-500;
+  }
+
+  .btn-paper {
+  @apply relative overflow-hidden px-8 py-4 rounded-full;
+  @apply font-display text-lg tracking-wide;
+  background: url('../saba/latter paper.webp') center/cover;
+  @apply text-primary-foreground;
+  @apply border border-primary/30;
+  @apply shadow-gold;
+  @apply transition-all duration-500;
+}
+
+.btn-paper:hover {
+  @apply scale-105;
+  box-shadow: 0 15px 50px hsl(var(--gold) / 0.4);
+}
+
+.btn-paper::before {
+  content: '';
+  @apply absolute inset-0;
+  @apply bg-gradient-to-r from-transparent via-white/20 to-transparent;
+  @apply -translate-x-full;
+  @apply transition-transform duration-700;
+}
+
+.btn-paper:hover::before {
+  @apply translate-x-full;
+}
+
+  /* Card with candle glow border */
+  .card-candle {
+    @apply relative rounded-xl overflow-hidden;
+    @apply bg-card/80 backdrop-blur-sm;
+    @apply border border-primary/20;
+  }
+
+  .card-candle::before {
+    content: '';
+    @apply absolute inset-0 -z-10;
+    @apply rounded-xl;
+    background: radial-gradient(ellipse at center, hsl(var(--candle-glow) / 0.15), transparent 70%);
+  }
+  /* Typography enhancements */
+  .heading-primary {
+    @apply font-display text-5xl md:text-7xl text-primary drop-shadow-md;
+  }
+  .highlight-gold {
+    @apply text-primary font-bold italic underline decoration-wavy decoration-primary/60;
+  }
+  /* Ambient lotus glow */
+  .lotus-ambient {
+    @apply absolute inset-0 pointer-events-none;
+    background: radial-gradient(ellipse at center, hsl(var(--candle-glow) / 0.12), transparent 70%);
+    filter: blur(40px);
+  }
+  /* Decorative divider */
+  .divider-gold {
+    @apply border-t border-primary/30 w-32 mx-auto my-6;
+  }
+
+  /* Typewriter effect wrapper */
+  .typewriter {
+    @apply inline font-body leading-relaxed;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar but allow scrolling */
+body::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
