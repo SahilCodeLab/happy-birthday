@@ -228,7 +228,7 @@ export default function Step2Moments({ onNext }: Step2Props) {
                   </AnimatePresence>
                 )}
             {activeLineIdx < lines.length && lines[activeLineIdx].block === 2 && currentLineText && (
-              <p className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
+              <p className="font-handwriting text-base sm:text-[20px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
                 {currentLineText}
               </p>
             )}
