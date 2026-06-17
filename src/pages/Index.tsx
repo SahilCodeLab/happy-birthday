@@ -6,7 +6,6 @@ import Step1Message from "../steps/Step1Message";
 import Step2Moments from "../steps/Step2Moments";
 import Step3Letter from "../steps/Step3Letter";
 import Step4Promises from "../steps/Step4Promises";
-import Step5Wish from "../steps/Step5Wish";
 import OutroStep from "../steps/OutroStep";
 
 const Index = () => {
@@ -14,7 +13,12 @@ const Index = () => {
   const audioRef = useRef<AudioPlayerHandle>(null);
 
   const nextStep = () => {
-    setCurrentStep((prev) => prev + 1);
+    setCurrentStep(prev => prev + 1);
+  };
+
+  // Navigate to previous step
+  const prevStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
   // Jab user "Begin" click karega, tab audio web se play hoga
@@ -28,10 +32,9 @@ const Index = () => {
   const steps = [
     <EntranceStep key="entrance" onNext={handleStart} />,
     <Step1Message key="step1" onNext={nextStep} />,
-    <Step2Moments key="step2" onNext={nextStep} />,
-    <Step3Letter key="step3" onNext={nextStep} />,
-    <Step4Promises key="step4" onNext={nextStep} />,
-    <Step5Wish key="step5" onNext={nextStep} />,
+    <Step2Moments key="step2" onNext={nextStep} onPrev={prevStep} />,
+    <Step3Letter key="step3" onNext={nextStep} onPrev={prevStep} />,
+    <Step4Promises key="step4" onNext={nextStep} onPrev={prevStep} />,
     <OutroStep key="outro" />,
   ];
 
@@ -41,7 +44,7 @@ const Index = () => {
       <div 
         className="fixed inset-0 pointer-events-none opacity-30 z-0"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          background: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}
       />
 

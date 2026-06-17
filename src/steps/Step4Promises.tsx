@@ -1,86 +1,58 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Heart } from "lucide-react";
 import FloatingCandles from "../components/FloatingCandles";
 import FallingPetals from "../components/FallingPetals";
 import LotusFlower from "../components/LotusFlower";
 import CandleFlame from "../components/CandleFlame";
-import ImageGallery from "../components/ImageGallery";
+import buttonTexture from "../saba/button texture.jpg";
+
+// Import beautiful memory images
+import img1 from "../saba/IMG-20250608-WA0000.jpg";
+import img2 from "../saba/IMG-20250608-WA0001.jpg";
+import img3 from "../saba/IMG-20250625-WA0000.jpg";
+import img4 from "../saba/IMG-20250625-WA0001.jpg";
+import img5 from "../saba/IMG-20250625-WA0002.jpg";
+import img6 from "../saba/IMG-20251212-WA0000.jpg";
+import img7 from "../saba/IMG-20251212-WA0001.jpg";
+import img8 from "../saba/IMG-20251212-WA0002.jpg";
 
 interface Step4Props {
   onNext: () => void;
+  onPrev?: () => void;
 }
 
-const lines = [
-  { text: "Agar kabhi tumhare dil ko bhi aisa hi lage…", block: 0 },
-  { text: "Ke hum dono ek hi taraf dekh rahe hain, toh main intezaar nahi karunga.", block: 0 },
-  { text: "Main saath chalne ko ready rahunga.", block: 0 },
-  { text: "Jahan rukna ho… waha rukenge.", block: 1 },
-  { text: "Jahan breathe chahiye ho… waha ruk jayenge.", block: 1 },
-  { text: "Jahan pace slow ho… waha slow ho jayenge.", block: 1 }
+const albumImages = [
+  { src: img1, caption: "Saba... tumhaari smile sabse pyaari hai ✨", date: "8 June 2025" },
+  { src: img2, caption: "Har ek lamha jo tumhare sath beeta... 💖", date: "8 June 2025" },
+  { src: img3, caption: "Sukoon bhari baatein, aur dher saari yaadein 🌟", date: "25 June 2025" },
+  { src: img4, caption: "Tumhari hansi jaise koi khoobsurat geet ho 🌸", date: "25 June 2025" },
+  { src: img5, caption: "Saba, you bring warmth and light to everything 💕", date: "25 June 2025" },
+  { src: img6, caption: "Ye pyaare pal hamesha dil ke paas rahenge 💫", date: "12 Dec 2025" },
+  { src: img7, caption: "Tumhare chehre ki khushi hi sab kuch hai 🌹", date: "12 Dec 2025" },
+  { src: img8, caption: "Always keeping these memories safe in my heart 🥰", date: "12 Dec 2025" },
 ];
 
-const Step4Promises = ({ onNext }: Step4Props) => {
-  const [visibleLines, setVisibleLines] = useState<string[][]>([[], []]);
-  const [currentLineText, setCurrentLineText] = useState("");
-  const [activeLineIdx, setActiveLineIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
+export default function Step4Promises({ onNext, onPrev }: Step4Props) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [liked, setLiked] = useState<Record<number, boolean>>({});
 
-  useEffect(() => {
-    if (isTypingComplete) return;
+  const handleNextCard = () => {
+    setActiveIndex((prev) => (prev + 1) % albumImages.length);
+  };
 
-    if (activeLineIdx >= lines.length) {
-      setIsTypingComplete(true);
-      return;
-    }
+  const handlePrevCard = () => {
+    setActiveIndex((prev) => (prev - 1 + albumImages.length) % albumImages.length);
+  };
 
-    const currentLine = lines[activeLineIdx];
-    const fullText = currentLine.text;
-
-    if (charIdx < fullText.length) {
-      const timer = setTimeout(() => {
-        setCurrentLineText(fullText.slice(0, charIdx + 1));
-        setCharIdx((prev) => prev + 1);
-      }, 50);
-      return () => clearTimeout(timer);
-    } else {
-      const nextLine = lines[activeLineIdx + 1];
-      const isNewBlock = nextLine && nextLine.block !== currentLine.block;
-      const pauseDuration = isNewBlock ? 1500 : 800;
-
-      const pauseTimer = setTimeout(() => {
-        setVisibleLines((prev) => {
-          const updated = [...prev];
-          updated[currentLine.block] = [...updated[currentLine.block], fullText];
-          return updated;
-        });
-        setCurrentLineText("");
-        setCharIdx(0);
-        setActiveLineIdx((prev) => prev + 1);
-      }, pauseDuration);
-
-      return () => clearTimeout(pauseTimer);
-    }
-  }, [activeLineIdx, charIdx, isTypingComplete]);
-
-  const handleCardClick = () => {
-    if (!isTypingComplete) {
-      const allCompleted: string[][] = [[], []];
-      lines.forEach((line) => {
-        allCompleted[line.block].push(line.text);
-      });
-      setVisibleLines(allCompleted);
-      setCurrentLineText("");
-      setCharIdx(0);
-      setActiveLineIdx(lines.length);
-      setIsTypingComplete(true);
-    }
+  const toggleLike = (index: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLiked((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
   return (
-    <div className="relative w-full h-[100dvh] min-h-[100dvh] max-h-[100dvh] flex flex-col items-center justify-center px-4 overflow-hidden z-10 select-none">
+    <div className="relative w-full h-[100dvh] min-h-[100dvh] max-h-[100dvh] flex flex-col items-center justify-between py-6 px-4 overflow-hidden z-10 select-none bg-gradient-to-b from-background via-cream-dark to-background">
       <FloatingCandles />
       <FallingPetals />
 
@@ -88,124 +60,200 @@ const Step4Promises = ({ onNext }: Step4Props) => {
         <CandleFlame className="w-40 h-80 opacity-15 filter blur-3xl" />
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -40, scale: 0.95 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="w-[92vw] max-w-full sm:max-w-[450px] max-h-[90vh] min-h-[460px] z-10 flex relative"
-      >
-        <div
-          onClick={handleCardClick}
-          className="w-full h-full bg-[#FCFAF2] border border-primary/20 shadow-2xl rounded-2xl p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden cursor-pointer"
+      {/* Header Area */}
+      <div className="text-center z-10 mt-2 shrink-0">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center"
         >
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent z-20" />
-          <div className="absolute left-[40px] sm:left-[55px] top-0 bottom-0 w-[1px] bg-red-400/25 pointer-events-none z-20" />
-
-          <motion.div
-            animate={{ opacity: [0.03, 0.06, 0.03], scale: [1.3, 1.35, 1.3] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden"
-          >
-            <LotusFlower className="scale-[1.6] opacity-10 filter blur-[2px]" />
-          </motion.div>
-
-          {/* Card Header */}
-          <div className="text-center border-b border-primary/10 pb-3 z-10 shrink-0">
-            <h1 className="font-display text-xl sm:text-2xl text-primary tracking-wide">
-              Mera Compass
-            </h1>
-            <p className="font-body text-[11px] sm:text-xs text-muted-foreground/80 italic leading-relaxed max-w-[280px] mx-auto">
-              "Hum dono ki apni raah..."
-            </p>
+          <div className="relative mb-1">
+            <LotusFlower className="h-10 w-10 text-primary opacity-80" />
           </div>
-        <ImageGallery />
+          <h1 className="font-display text-2xl sm:text-3xl text-primary tracking-widest uppercase">
+            Saba's Journal
+          </h1>
+          <p className="font-body text-xs sm:text-sm text-muted-foreground italic mt-1 max-w-[320px]">
+            "Kuch haseen yaadein jo humare safar ko khoobsurat banati hain..."
+          </p>
+        </motion.div>
+      </div>
 
-          {/* Ruled Notebook Writing Area */}
-            <div
-              className="flex-1 flex flex-col justify-start pl-[38px] sm:pl-[52px] pr-2 z-10 overflow-y-auto py-3 text-left"
-              style={{
-                backgroundImage: 'repeating-linear-gradient(transparent, transparent 29px, hsl(var(--primary) / 0.12) 29px, hsl(var(--primary) / 0.12) 30px)',
-                backgroundAttachment: 'local'
-              }}
-          >
-            {/* Block 1 */}
-            {visibleLines[0].length > 0 && (
-              visibleLines[0].map((line, idx) => (
-                <p key={idx} className="font-handwriting text-base sm:text-[17px] text-foreground/90 leading-[30px] m-0">
-                  {line}
-                </p>
-              ))
-            )}
-            {activeLineIdx < lines.length && lines[activeLineIdx].block === 0 && currentLineText && (
-              <p className="font-handwriting text-base sm:text-[17px] text-foreground leading-[30px] m-0 typewriter-cursor">
-                {currentLineText}
-              </p>
-            )}
+      {/* 3D Carousel Area */}
+      <div 
+        className="w-full flex-1 flex items-center justify-center relative my-4 overflow-visible"
+        style={{ perspective: "1200px" }}
+      >
+        <div className="relative w-full max-w-[90vw] sm:max-w-[420px] h-[340px] sm:h-[400px] flex items-center justify-center">
+          {albumImages.map((image, index) => {
+            const diff = index - activeIndex;
+            const isActive = index === activeIndex;
+            
+            // Render only current, left, and right cards to save performance & prevent overflow
+            const isVisible = Math.abs(diff) <= 1 || (activeIndex === 0 && index === albumImages.length - 1) || (activeIndex === albumImages.length - 1 && index === 0);
+            
+            if (!isVisible) return null;
 
-            {/* Spacer */}
-            {(visibleLines[1].length > 0 || (activeLineIdx >= 3 && activeLineIdx < lines.length)) && (
-              <p className="leading-[30px] m-0">&nbsp;</p>
-            )}
+            // Handle wrap-around diff for proper 3D positioning
+            let calculatedDiff = diff;
+            if (diff > 1) calculatedDiff = diff - albumImages.length;
+            if (diff < -1) calculatedDiff = diff + albumImages.length;
 
-            {/* Block 2 */}
-            {visibleLines[1].length > 0 && (
-              visibleLines[1].map((line, idx) => (
-                <p key={idx} className="font-handwriting text-base sm:text-[17px] text-muted-foreground leading-[30px] m-0">
-                  {line}
-                </p>
-              ))
-            )}
-            {activeLineIdx < lines.length && lines[activeLineIdx].block === 1 && currentLineText && (
-              <p className="font-handwriting text-base sm:text-[17px] text-muted-foreground leading-[30px] m-0 typewriter-cursor">
-                {currentLineText}
-              </p>
-            )}
-          </div>
+            const scale = isActive ? 1.05 : 0.85;
+            const rotateY = isActive ? 0 : calculatedDiff < 0 ? 35 : -35;
+            const rotateZ = isActive ? 0 : calculatedDiff < 0 ? -4 : 4;
+            const xOffset = calculatedDiff * 140; // Spacing between cards
+            const zIndex = 50 - Math.abs(calculatedDiff) * 10;
+            const opacity = isActive ? 1 : 0.6;
 
-          {/* Footer */}
-          <div className="shrink-0 flex flex-col items-center justify-center border-t border-primary/10 pt-3 z-10 min-h-[90px]">
-            {!isTypingComplete ? (
-              <div className="text-[9px] font-display text-primary/45 tracking-widest uppercase animate-pulse pb-2">
-                ✦ plotting paths ✦
-              </div>
-            ) : (
+            return (
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="w-full flex flex-col items-center space-y-3"
+                key={index}
+                style={{
+                  position: "absolute",
+                  zIndex: zIndex,
+                  transformStyle: "preserve-3d",
+                }}
+                initial={false}
+                animate={{
+                  x: xOffset,
+                  scale: scale,
+                  rotateY: rotateY,
+                  rotateZ: rotateZ,
+                  opacity: opacity,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 25,
+                }}
+                whileHover={isActive ? {
+                  scale: 1.08,
+                  y: -8,
+                  rotate: 0,
+                  transition: { duration: 0.3 }
+                } : {}}
+                drag={isActive ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                onDragEnd={(e, info) => {
+                  if (info.offset.x > 60) {
+                    handlePrevCard();
+                  } else if (info.offset.x < -60) {
+                    handleNextCard();
+                  }
+                }}
+                className="w-[280px] sm:w-[320px] h-[320px] sm:h-[370px] bg-[#FCFAF2] border-2 border-primary/20 rounded-xl p-4 flex flex-col justify-between cursor-grab active:cursor-grabbing shadow-[0_12px_28px_rgba(0,0,0,0.15)] relative overflow-hidden"
               >
-                <div className="w-16 border-t border-primary/30 my-0.5" />
+                {/* Vintage tape top accent */}
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-primary/10 rotate-1 rounded backdrop-blur-sm pointer-events-none border-b border-primary/5" />
 
-                <div className="text-center">
-                  <p className="font-signature text-2xl sm:text-3xl text-primary font-medium leading-none">
-                    "Tumhaari comfort,"
-                  </p>
-                  <p className="font-signature text-2xl sm:text-3xl text-primary font-medium leading-none">
-                    "mere liye compass ban sakti hai."
-                  </p>
+                {/* Date stamp */}
+                <div className="absolute top-3 left-4 text-[9px] font-mono text-primary/60 tracking-wider">
+                  {image.date}
                 </div>
 
-                <div className="pt-0.5 flex justify-center">
-<Button
-  onClick={(e) => {
-    e.stopPropagation();
-    onNext();
-  }}
-  className="btn-paper flex items-center gap-2"
->
-  Ek last baat… ✨
-  <ArrowRight className="h-4 w-4" />
-</Button>
+                {/* Heart overlay / like indicator */}
+                <button
+                  onClick={(e) => toggleLike(index, e)}
+                  className="absolute top-3 right-4 z-20 transition-all duration-300 hover:scale-125 focus:outline-none"
+                >
+                  <Heart
+                    className={`h-5 w-5 stroke-primary/55 transition-colors ${
+                      liked[index] ? "fill-red-500 stroke-red-500 scale-110 drop-shadow-[0_2px_8px_rgba(239,68,68,0.5)]" : "text-primary/70"
+                    }`}
+                  />
+                </button>
+
+                {/* Interactive Heart Drawing effect when liked */}
+                <AnimatePresence>
+                  {liked[index] && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 0.8 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="absolute inset-0 pointer-events-none flex items-center justify-center z-10"
+                    >
+                      <motion.div
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ repeat: Infinity, duration: 1.5 }}
+                        className="bg-red-500/10 p-4 rounded-full border border-red-500/20"
+                      >
+                        <Heart className="h-16 w-16 fill-red-500 text-red-500 opacity-60 filter drop-shadow-[0_0_12px_rgba(239,68,68,0.6)]" />
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Premium Image Container */}
+                <div className="w-full h-[190px] sm:h-[230px] rounded-lg overflow-hidden border border-primary/10 shadow-inner bg-cream mt-4 relative">
+                  <img
+                    src={image.src}
+                    alt={image.caption}
+                    className="w-full h-full object-cover select-none pointer-events-none"
+                    loading="eager"
+                  />
+                  
+                  {/* Subtle paper grain texture overlay */}
+                  <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-noise" />
+                </div>
+
+                {/* Caption text */}
+                <div className="flex-1 flex flex-col justify-center items-center px-1 py-2 text-center">
+                  <p className="font-handwriting text-[#7a6656] text-base sm:text-lg leading-relaxed m-0 italic font-medium">
+                    {image.caption}
+                  </p>
                 </div>
               </motion.div>
-            )}
-          </div>
+            );
+          })}
         </div>
-      </motion.div>
+      </div>
+
+      {/* Navigation Dot Indicator */}
+      <div className="flex gap-2 z-10 mb-2 justify-center items-center shrink-0">
+        {albumImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setActiveIndex(index)}
+            className={`transition-all duration-300 rounded-full ${
+              index === activeIndex ? "w-4 h-1.5 bg-primary" : "w-1.5 h-1.5 bg-primary/30 hover:bg-primary/50"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Step Navigation Footer */}
+      <div className="w-full max-w-[420px] shrink-0 flex flex-col items-center space-y-3 z-10 pb-2 border-t border-primary/10 pt-3">
+        <div className="flex w-full items-center justify-between px-2 gap-4">
+          {onPrev && (
+            <Button
+              className="btn-paper flex-1 flex items-center justify-center gap-1.5 py-2"
+              style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onPrev();
+              }}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Pichla? 🌸
+            </Button>
+          )}
+
+          <Button
+            className="btn-paper flex-1 flex items-center justify-center gap-1.5 py-2"
+            style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onNext();
+            }}
+          >
+            Aage? ✨
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default Step4Promises;
+}

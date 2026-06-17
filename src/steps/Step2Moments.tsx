@@ -20,7 +20,7 @@ interface Step2Props {
 const lines = [
   // Block 1 (Lines 0 to 4)
   { text: "Aaj tumhara birthday hai.", block: 0 },
-  { text: "Aur shayad ye kehna zaroori hai...", block: 0 },
+  { text: "Aur shayad ye kehna zaroori hai...💗", block: 0 },
   { text: "Is poore saal me bohot kuch badla hoga.", block: 0 },
   { text: "Lekin ek cheez nahi badli.", block: 0 },
   { text: "Tumhari jagah.", block: 0 },
@@ -155,22 +155,15 @@ export default function Step2Moments({ onNext }: Step2Props) {
               }}
             >
             {/* Block 1 */}
-              {visibleLines[0].length > 0 && (
-                <AnimatePresence>
-                  {visibleLines[0].map((line, idx) => (
-                    <motion.p
-                      key={idx}
-                      className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.8 }}
-                    >
-                      {line}
-                    </motion.p>
-                  ))}
-                </AnimatePresence>
-              )}
+              {visibleLines[0].length > 0 &&
+                visibleLines[0].map((line, idx) => (
+                  <p
+                    key={idx}
+                    className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0"
+                  >
+                    {line}
+                  </p>
+                ))}
             {activeLineIdx < lines.length && lines[activeLineIdx].block === 0 && currentLineText && (
               <p className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
                 {currentLineText}
@@ -183,22 +176,15 @@ export default function Step2Moments({ onNext }: Step2Props) {
             )}
 
             {/* Block 2 */}
-              {visibleLines[1].length > 0 && (
-                <AnimatePresence>
-                  {visibleLines[1].map((line, idx) => (
-                    <motion.p
-                      key={idx}
-                      className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.8 }}
-                    >
-                      {line}
-                    </motion.p>
-                  ))}
-                </AnimatePresence>
-              )}
+              {visibleLines[1].length > 0 &&
+                visibleLines[1].map((line, idx) => (
+                  <p
+                    key={idx}
+                    className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0"
+                  >
+                    {line}
+                  </p>
+                ))}
             {activeLineIdx < lines.length && lines[activeLineIdx].block === 1 && currentLineText && (
               <p className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
                 {currentLineText}
@@ -211,22 +197,15 @@ export default function Step2Moments({ onNext }: Step2Props) {
             )}
 
             {/* Block 3 */}
-                {visibleLines[2].length > 0 && (
-                  <AnimatePresence>
-                    {visibleLines[2].map((line, idx) => (
-                      <motion.p
-                        key={idx}
-                        className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.8 }}
-                      >
-                        {line}
-                      </motion.p>
-                    ))}
-                  </AnimatePresence>
-                )}
+              {visibleLines[2].length > 0 &&
+                visibleLines[2].map((line, idx) => (
+                  <p
+                    key={idx}
+                    className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0"
+                  >
+                    {line}
+                  </p>
+                ))}
             {activeLineIdx < lines.length && lines[activeLineIdx].block === 2 && currentLineText && (
               <p className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
                 {currentLineText}

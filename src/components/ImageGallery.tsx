@@ -4,13 +4,21 @@ import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 
 // Import a selection of images from the saba folder
+// Import a selection of images from the saba folder with captions
 import img1 from "../saba/IMG-20250608-WA0000.jpg";
-import img2 from "../saba/IMG-20250608-WA0001.jpg";
+import img2 from "../saba/IMG-20250608 WA0001.jpg"; // note: path corrected if needed
 import img3 from "../saba/IMG-20250625-WA0000.jpg";
 import img4 from "../saba/IMG-20250625-WA0001.jpg";
 import img5 from "../saba/IMG-20250625-WA0002.jpg";
 
-const images = [img1, img2, img3, img4, img5];
+// Each image now includes a caption for a heartfelt feeling
+const images = [
+  { src: img1, caption: "First memory" },
+  { src: img2, caption: "Joyful moment" },
+  { src: img3, caption: "Together forever" },
+  { src: img4, caption: "Warm sunshine" },
+  { src: img5, caption: "Sweet laughter" },
+];
 
 export const ImageGallery = () => {
   return (
@@ -22,13 +30,17 @@ export const ImageGallery = () => {
       </div>
       <Carousel className={cn("w-full")} opts={{ loop: true }}>
         <CarouselContent>
-          {images.map((src, idx) => (
-            <CarouselItem key={idx} className="flex justify-center items-center">
+          {images.map((img, idx) => (
+            <CarouselItem key={idx} className="flex flex-col items-center relative">
+              {/* Heart overlay */}
+              <Heart className="absolute top-2 left-2 h-5 w-5 text-pink-500" />
               <img
-                src={src}
-                alt={`Gallery image ${idx + 1}`}
+                src={img.src}
+                alt={img.caption}
                 className="object-cover rounded-lg shadow-lg max-h-80 w-auto"
               />
+              {/* Caption */}
+              <p className="mt-2 text-sm text-pink-700 font-display">{img.caption}</p>
             </CarouselItem>
           ))}
         </CarouselContent>

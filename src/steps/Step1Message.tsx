@@ -29,10 +29,54 @@ const calendarDays = [
 
 export default function Step1Message({ onNext }: Step1Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [lastEvadeTime, setLastEvadeTime] = useState(0);
   const [visibleCount, setVisibleCount] = useState(0); // Completed typing message index
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [currentTyped, setCurrentTyped] = useState("");
   const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  const handleEvade = (e: React.MouseEvent | React.TouchEvent) => {
+    const now = Date.now();
+    if (now - lastEvadeTime < 450) return; // Cooldown to prevent double-triggers
+
+    if (attempts < 4) {
+      e.preventDefault();
+      // Jumps randomly within a reasonable range on mouse enter or touch start
+      const randomX = (Math.random() - 0.5) * 160;
+      const randomY = (Math.random() - 0.5) * 120;
+      setOffset({ x: randomX, y: randomY });
+      setAttempts((prev) => prev + 1);
+      setLastEvadeTime(now);
+    } else if (attempts === 4) {
+      e.preventDefault();
+      // Returns back to center on 5th touch attempt
+      setOffset({ x: 0, y: 0 });
+      setAttempts(5);
+      setLastEvadeTime(now);
+    }
+  };
+
+  const handleSealClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const now = Date.now();
+    if (attempts >= 5) {
+      setIsOpen(true);
+    } else if (attempts === 4) {
+      if (now - lastEvadeTime < 450) return;
+      setOffset({ x: 0, y: 0 });
+      setAttempts(5);
+      setLastEvadeTime(now);
+    } else {
+      if (now - lastEvadeTime < 450) return;
+      const randomX = (Math.random() - 0.5) * 160;
+      const randomY = (Math.random() - 0.5) * 120;
+      setOffset({ x: randomX, y: randomY });
+      setAttempts((prev) => prev + 1);
+      setLastEvadeTime(now);
+    }
+  };
 
   // Typewriter animation logic
   useEffect(() => {
@@ -114,10 +158,14 @@ export default function Step1Message({ onNext }: Step1Props) {
               <div className="flex flex-col items-center space-y-4 pb-6">
                 {/* Wax Seal Button */}
                 <motion.button
+                  animate={{ x: offset.x, y: offset.y }}
+                  transition={{ type: "spring", stiffness: 350, damping: 22 }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsOpen(true)}
-                  className="w-16 h-16 rounded-full bg-gradient-to-br from-secondary to-wine-dark border border-primary/40 flex items-center justify-center shadow-lg cursor-pointer relative"
+                  onMouseEnter={handleEvade}
+                  onTouchStart={handleEvade}
+                  onClick={handleSealClick}
+                  className="w-16 h-16 rounded-full bg-gradient-to-br from-secondary to-wine-dark border border-primary/40 flex items-center justify-center shadow-lg cursor-pointer relative z-30"
                 >
                   <div className="absolute inset-1 rounded-full border border-primary/30 flex items-center justify-center">
                     <span className="font-signature text-primary-foreground text-3xl">S</span>
@@ -125,8 +173,13 @@ export default function Step1Message({ onNext }: Step1Props) {
                   <div className="absolute -inset-2 rounded-full border border-primary/20 animate-ping opacity-50" />
                 </motion.button>
 
-                <span className="text-[10px] font-display text-primary/70 tracking-widest uppercase animate-pulse">
-                  Tap to break seal
+                <span className="text-[11px] font-display text-primary/80 tracking-widest uppercase animate-pulse min-h-[16px] text-center font-medium">
+                  {attempts === 0 && "Tap to break seal"}
+                  {attempts === 1 && "Arre! Pakdo mujhe! 😜"}
+                  {attempts === 2 && "Thoda aur karib... 🤭"}
+                  {attempts === 3 && "Pakad ke dikhao! ⚡"}
+                  {attempts === 4 && "Almost there... 🌸"}
+                  {attempts >= 5 && "Chalo, ab click karo 🌸"}
                 </span>
               </div>
             </div>
