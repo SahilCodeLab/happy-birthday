@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { handleBlockMusic } from "../musicController";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -231,6 +232,7 @@ export default function Step2Moments({ onNext }: Step2Props) {
                 style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
                 onClick={(e) => {
                   e.stopPropagation(); // Stop parent click
+                  void handleBlockMusic(0); // start intro music on click
                   onNext();
                 }}
               >
