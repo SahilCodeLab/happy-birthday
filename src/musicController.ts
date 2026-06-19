@@ -50,18 +50,17 @@ const alreadySeeked = new Set<string>(); // Tracks that have been seeked once on
 /**
  * Cross‑fade two <audio> elements.
  *   - Clears any existing intervals to prevent volume fighting.
- *   - Fades out the previous track completely to 0, then pauses it.
- *   - Resets the new track's volume to 0, plays it, and fades it to 0.25.
+ *   - Fades out the previous track completely to 0 over 3000ms.
+ *   - Resets the new track's volume to 0, plays it, and fades it up to 0.25.
  */
 function crossFade(
   from: HTMLAudioElement | null,
   to: HTMLAudioElement,
-  durationMs = 500
+  durationMs = 3000 // 3 seconds for a very smooth, unnoticeable cinematic transition
 ): Promise<void> {
-  const steps = 10; // 500ms / 50ms
-  const stepTime = durationMs / steps;
+  const steps = 60; // 60 steps over 3 seconds (50ms interval) for ultra-smooth transition
+  const stepTime = durationMs / steps; // 50ms
   const targetVol = 0.25;
-  const inc = targetVol / steps;
 
   // Clear any running volume animations on these elements to prevent glitching
   if (from && (from as any).fadeInterval) {
@@ -73,41 +72,50 @@ function crossFade(
     (to as any).fadeInterval = null;
   }
 
-  // Ensure target track starts silent
-  to.volume = 0;
+  // Calculate dynamic volume steps based on current volumes to avoid jumps
+  const startVolFrom = from ? from.volume : 0;
+  const dec = startVolFrom / steps;
 
-  // Play target track (swallow autoplay restrictions)
-  const playPromise = to.play().catch((err) => {
-    console.log("Autoplay or playback blocked initially:", err);
-  });
+  // If target track is not playing, start it from silence immediately
+  if (to.paused) {
+    to.volume = 0;
+    to.play().catch((err) => {
+      console.log("Autoplay or playback blocked initially:", err);
+    });
+  }
 
-  return playPromise.then(() => {
-    let tick = 0;
-    const interval = setInterval(() => {
-      tick++;
+  const startVolTo = to.volume;
+  const inc = (targetVol - startVolTo) / steps;
 
-      // Fade out previous track
-      if (from) {
-        const newVol = Math.max(0, from.volume - inc);
-        from.volume = newVol;
-        if (newVol === 0 && !from.paused) {
-          from.pause();
-        }
+  // Run the fade interval loop synchronously with the play trigger
+  let tick = 0;
+  const interval = setInterval(() => {
+    tick++;
+
+    // Fade out previous track
+    if (from) {
+      const newVol = Math.max(0, from.volume - dec);
+      from.volume = newVol;
+      if (newVol === 0 && !from.paused) {
+        from.pause();
       }
+    }
 
-      // Fade in new track
-      const newVol = Math.min(targetVol, to.volume + inc);
-      to.volume = newVol;
+    // Fade in new track
+    const newVol = Math.min(targetVol, to.volume + inc);
+    to.volume = newVol;
 
-      // Stop once target volume is reached
-      if (newVol === targetVol) {
-        clearInterval(interval);
-        (to as any).fadeInterval = null;
-      }
-    }, stepTime);
+    // Stop once target volume is reached or steps are done
+    if (tick >= steps || newVol === targetVol) {
+      clearInterval(interval);
+      to.volume = targetVol;
+      if (from) from.volume = 0;
+      (to as any).fadeInterval = null;
+    }
+  }, stepTime);
 
-    (to as any).fadeInterval = interval;
-  });
+  (to as any).fadeInterval = interval;
+  return Promise.resolve();
 }
 
 /**
@@ -119,16 +127,19 @@ export async function handleBlockMusic(blockNumber: number): Promise<void> {
   if (!mapping) return; // safety - block doesn't exist
 
   const targetId = mapping.id;
-
-  // 2. STRICT REPEAT-PREVENTION GUARD
-  if (currentTrackId === targetId) {
-    return; // Exit immediately without touching volume, time, or play state
-  }
-
   const targetEl = document.getElementById(targetId) as HTMLAudioElement | null;
   if (!targetEl) {
     console.warn(`Audio element #${targetId} not found`);
     return;
+  }
+
+  // 2. STRICT REPEAT-PREVENTION GUARD
+  if (currentTrackId === targetId) {
+    // If it's already the current track, make sure it's actually playing (in case autoplay blocked it initially)
+    if (targetEl.paused) {
+      targetEl.play().catch((err) => console.log("Play failed on retry:", err));
+    }
+    return; // Exit immediately without resetting volume, time, or play state
   }
 
   // Track state transition immediately to guard against concurrent clicks
@@ -158,4 +169,65 @@ export async function handleBlockMusic(blockNumber: number): Promise<void> {
     : null;
 
   await crossFade(previousEl, targetEl);
+}
+
+/**
+ * Stop all background tracks smoothly, or instantly if durationMs is 0.
+ */
+export async function stopAllMusic(durationMs = 1200): Promise<void> {
+  const trackIds = ["track0", "track10", "track14", "track16"];
+
+  // 1. Immediately clear any running volume fade intervals on all elements
+  trackIds.forEach((id) => {
+    const el = document.getElementById(id) as HTMLAudioElement | null;
+    if (el) {
+      if ((el as any).fadeInterval) {
+        clearInterval((el as any).fadeInterval);
+        (el as any).fadeInterval = null;
+      }
+    }
+  });
+
+  // 2. For instant stop (durationMs === 0), pause all elements and set volume to 0 immediately
+  if (durationMs === 0) {
+    trackIds.forEach((id) => {
+      const el = document.getElementById(id) as HTMLAudioElement | null;
+      if (el) {
+        el.volume = 0;
+        el.pause();
+      }
+    });
+    currentTrackId = null;
+    return Promise.resolve();
+  }
+
+  // 3. Otherwise, perform a smooth fade out on the active track
+  if (!currentTrackId) return;
+
+  const currentEl = document.getElementById(currentTrackId) as HTMLAudioElement | null;
+  if (currentEl) {
+    const steps = 10;
+    const stepTime = durationMs / steps;
+    const dec = currentEl.volume / steps;
+
+    const fadeOutPromise = new Promise<void>((resolve) => {
+      let tick = 0;
+      const interval = setInterval(() => {
+        tick++;
+        const newVol = Math.max(0, currentEl.volume - dec);
+        currentEl.volume = newVol;
+        if (newVol === 0 || currentEl.paused) {
+          clearInterval(interval);
+          currentEl.pause();
+          currentEl.volume = 0;
+          resolve();
+        }
+      }, stepTime);
+      (currentEl as any).fadeInterval = interval;
+    });
+
+    await fadeOutPromise;
+  }
+  
+  currentTrackId = null;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { handleBlockMusic } from "../musicController";
+import { handleBlockMusic, stopAllMusic } from "../musicController";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -19,18 +19,25 @@ interface Step2Props {
 }
 
 const lines = [
-  // Block 1 (Lines 0 to 4)
-  { text: "Aaj tumhara birthday hai.", block: 0 },
-  { text: "Aur shayad ye kehna zaroori hai...💗", block: 0 },
-  { text: "Is poore saal me bohot kuch badla hoga.", block: 0 },
-  { text: "Lekin ek cheez nahi badli.", block: 0 },
-  { text: "Tumhari jagah.", block: 0 },
-  // Block 2 (Lines 5 to 6)
-  { text: "Kabhi hasi, kabhi random discussions, kabhi padhai ki baatein, aur kabhi bas ek simple message.", block: 1 },
-  { text: "Pata hi nahi chala kab ye sab rozmarra ka hissa ban gaya.", block: 1 },
-  // Block 3 (Line 7)
-  { text: "Shayad isi liye, aaj ka din mere liye bhi khaas lagta hai.", block: 2 }
-];
+ // Block 1
+{ text: "Aaj aapka birthday hai. 🌸", block: 0 },
+{ text: "Aur shayad ye kehna zaroori hai... ❤️", block: 0 },
+{ text: "Is poore saal me bohot kuch badla hoga.", block: 0 },
+{ text: "Lekin ek cheez nahi badli.", block: 0 },
+{ text: "Aapki jagah. 🤍", block: 0 },
+
+// Block 2
+{ text: "Kabhi hasi...", block: 1 },
+{ text: "Kabhi random discussions...", block: 1 },
+{ text: "Aur kabhi bas ek simple message.", block: 1 },
+
+// Block 3
+{ text: "Pata hi nahi chala...", block: 2 },
+{ text: "kab aap itni khaas ban gayi. ❤️", block: 2 },
+{ text: "Shayad aage jo likha hai...", block: 2 },
+{ text: "wahi sab batayega. 🌸", block: 2 }
+
+]
 
 export default function Step2Moments({ onNext }: Step2Props) {
   const [visibleLines, setVisibleLines] = useState<string[][]>([[], [], []]); // Store lines by block
@@ -38,6 +45,11 @@ export default function Step2Moments({ onNext }: Step2Props) {
   const [activeLineIdx, setActiveLineIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  // Stop music on mount
+  useEffect(() => {
+    void stopAllMusic();
+  }, []);
 
   // Typewriter reveal logic
   useEffect(() => {
@@ -118,7 +130,7 @@ export default function Step2Moments({ onNext }: Step2Props) {
         >
 
           <img src={flower1_1} alt="flower decoration 1" className="absolute top-4 left-2 w-16 h-16 pointer-events-none opacity-80" />
-          <img src={flower4} alt="flower decoration 2" className="absolute top-1 right-[1px] w-44 h-44 transform rotate-[-deg] pointer-events-none opacity-80" />
+          <img src={flower4} alt="flower decoration 2" className="absolute top-[-22px] right-[-22px] w-32 h-32 transform rotate-[-deg] pointer-events-none opacity-80 z-0" />
 
 
           {/* Subtle gold ribbon border on top */}
@@ -137,36 +149,36 @@ export default function Step2Moments({ onNext }: Step2Props) {
           </motion.div>
 
           {/* Card Header (Fixed height, unruled) */}
-          <div className="text-center border-b border-primary/10 pb-3 z-10 shrink-0">
-            <h1 className="font-display text-xl sm:text-2xl text-primary tracking-wide">
-              Ek Saal... Bina Plan Ke.
+          <div className="text-center border-b border-primary/10 pt-4 pb-3 z-20 shrink-0 max-w-[200px] sm:max-w-[250px] mx-auto relative">
+            <h1 className="font-display text-xl sm:text-2xl text-primary tracking-wide leading-snug">
+              Jahan Sab Shuru Hua...
             </h1>
-            <p className="font-body text-[11px] sm:text-xs text-muted-foreground/80 italic leading-relaxed max-w-[280px] mx-auto">
-              "Kuch log planning se nahi milte. <br />
-              Bas zindagi ka hissa ban jaate hain."
+            <p className="font-body text-[11px] sm:text-xs text-muted-foreground/80 italic leading-relaxed mt-1">
+              "Ek normal sa message. <br/>
+Ek yaadgaar safar ki shuruaat."
             </p>
           </div>
 
           {/* Ruled Notebook Writing Area */}
-            <div
-              className="flex-1 flex flex-col justify-start pl-[38px] sm:pl-[52px] pr-2 z-10 overflow-y-auto py-3 text-left fade-up"
-              style={{
-                backgroundImage: 'repeating-linear-gradient(transparent, transparent 29px, hsl(var(--primary) / 0.12) 29px, hsl(var(--primary) / 0.12) 30px)',
-                backgroundAttachment: 'local'
-              }}
-            >
+          <div
+            className="flex-1 flex flex-col justify-start pl-[38px] sm:pl-[52px] pr-2 z-10 overflow-y-auto py-3 text-left fade-up"
+            style={{
+              backgroundImage: 'repeating-linear-gradient(transparent, transparent 29px, hsl(var(--primary) / 0.12) 29px, hsl(var(--primary) / 0.12) 30px)',
+              backgroundAttachment: 'local'
+            }}
+          >
             {/* Block 1 */}
-              {visibleLines[0].length > 0 &&
-                visibleLines[0].map((line, idx) => (
-                  <p
-                    key={idx}
-                    className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0"
-                  >
-                    {line}
-                  </p>
-                ))}
+            {visibleLines[0].length > 0 &&
+              visibleLines[0].map((line, idx) => (
+                <p
+                  key={idx}
+                  className="font-handwriting text-[18px] sm:text-[20px] text-[#7a6656] leading-[30px] m-0"
+                >
+                  {line}
+                </p>
+              ))}
             {activeLineIdx < lines.length && lines[activeLineIdx].block === 0 && currentLineText && (
-              <p className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
+              <p className="font-handwriting text-[18px] sm:text-[20px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
                 {currentLineText}
               </p>
             )}
@@ -177,17 +189,17 @@ export default function Step2Moments({ onNext }: Step2Props) {
             )}
 
             {/* Block 2 */}
-              {visibleLines[1].length > 0 &&
-                visibleLines[1].map((line, idx) => (
-                  <p
-                    key={idx}
-                    className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0"
-                  >
-                    {line}
-                  </p>
-                ))}
+            {visibleLines[1].length > 0 &&
+              visibleLines[1].map((line, idx) => (
+                <p
+                  key={idx}
+                  className="font-handwriting text-[18px] sm:text-[20px] text-[#7a6656] leading-[30px] m-0"
+                >
+                  {line}
+                </p>
+              ))}
             {activeLineIdx < lines.length && lines[activeLineIdx].block === 1 && currentLineText && (
-              <p className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
+              <p className="font-handwriting text-[18px] sm:text-[20px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
                 {currentLineText}
               </p>
             )}
@@ -198,17 +210,17 @@ export default function Step2Moments({ onNext }: Step2Props) {
             )}
 
             {/* Block 3 */}
-              {visibleLines[2].length > 0 &&
-                visibleLines[2].map((line, idx) => (
-                  <p
-                    key={idx}
-                    className="font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0"
-                  >
-                    {line}
-                  </p>
-                ))}
+            {visibleLines[2].length > 0 &&
+              visibleLines[2].map((line, idx) => (
+                <p
+                  key={idx}
+                  className="font-handwriting text-[18px] sm:text-[20px] text-[#7a6656] leading-[30px] m-0"
+                >
+                  {line}
+                </p>
+              ))}
             {activeLineIdx < lines.length && lines[activeLineIdx].block === 2 && currentLineText && (
-              <p className="font-handwriting text-base sm:text-[20px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
+              <p className="font-handwriting text-[18px] sm:text-[23px] text-[#7a6656] leading-[30px] m-0 typewriter-cursor">
                 {currentLineText}
               </p>
             )}

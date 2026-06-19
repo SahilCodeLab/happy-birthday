@@ -106,8 +106,8 @@ const OutroStep = () => {
             >
               <Button
                 onClick={() => setIsDimmed(true)}
-                className="btn-paper px-6 py-2 text-xs sm:text-sm shadow-md hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 mx-auto"
-                style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover' }}
+                className="btn-paper px-6 py-2 text-xs sm:text-sm shadow-md hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 mx-auto text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
               >
                 Blow out the candle 🕯️
               </Button>

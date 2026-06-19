@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import CandleFlame from "../components/CandleFlame";
 import TypewriterText from "../components/TypewriterText";
-import ChapterButton from "../components/ChapterButton";
+import { Button } from "../components/ui/button";
+import buttonTexture from "../saba/button texture.jpg";
 import FallingPetals from "../components/FallingPetals";
 import SoftConfetti from "../components/SoftConfetti";
 import GoldenSparkles from "../components/GoldenSparkles";
@@ -155,9 +156,19 @@ const EntranceStep = ({ onNext }: EntranceStepProps) => {
 
         {/* BUTTON */}
         <div className="mt-10 sm:mt-16 z-30">
-          <ChapterButton onClick={onNext} delay={3.5}>
-            Open Your Gift ✨
-          </ChapterButton>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 3.5, ease: "easeOut" }}
+          >
+            <Button
+              className="btn-paper flex items-center justify-center gap-1.5 py-3 px-6 text-[#7a6656] font-bold text-lg min-w-[200px] bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+              onClick={onNext}
+            >
+              Open Your Gift ✨
+            </Button>
+          </motion.div>
         </div>
 
       </div>

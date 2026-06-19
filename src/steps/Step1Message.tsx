@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import CandleFlame from "../components/CandleFlame";
 import FallingPetals from "../components/FallingPetals";
 import "../index.css";
+import buttonTexture from "../saba/button texture.jpg";
 
 interface Step1Props {
   onNext: () => void;
@@ -310,14 +311,15 @@ export default function Step1Message({ onNext }: Step1Props) {
                     {/* Premium rounded navigation button */}
                     <div className="pt-0.5 flex justify-center">
                       <Button
-            className="btn-paper flex items-center gap-2"
-            onClick={(e) => {
-              e.stopPropagation(); // Avoid triggering container click
-              onNext();
-            }}
-          >
-            Aage Chalein? ✨ <ArrowRight size={16} />
-          </Button>
+                        className="btn-paper flex items-center gap-2 text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat"
+                        style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Avoid triggering container click
+                          onNext();
+                        }}
+                      >
+                        Aage Chalein? ✨ <ArrowRight size={16} />
+                      </Button>
                     </div>
                   </motion.div>
                 )}

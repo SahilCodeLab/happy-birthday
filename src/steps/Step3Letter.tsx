@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { handleBlockMusic } from "../musicController";
+import { handleBlockMusic, stopAllMusic } from "../musicController";
 import { motion } from "framer-motion";
 import { Button } from "../components/ui/button";
 import FallingPetals from "../components/FallingPetals";
@@ -58,7 +58,7 @@ const lines = [
   { text: "Kyuki un sab baaton ke peeche koi aur nahi,", block: 6 },
   { text: "Aap thi, Saba.", block: 6 },
 
-  { text: "Shayad aapko kabhi andaaza bhi na ho.", block: 7 },
+  { text: "Shayad aapko kabhi andaaza bhi na ho...", block: 7 },
   { text: "Lekin aapke meri life me aane ka impact", block: 7 },
   { text: "mujhe bahut pehle se feel hone laga tha.", block: 7 },
 
@@ -74,50 +74,50 @@ const lines = [
 
   { text: "Saba...", block: 10 },
   { text: "Pata hi nahi chala kab aap sirf ek naam se", block: 10 },
-  { text: "badhkar meri ek aadat ban gayi.", block: 10 },
+  { text: "badhkar meri ek aadat ban gayi...", block: 10 },
 
   { text: "Saba...", block: 11 },
   { text: "Jaise jaise waqt guzarta gaya,", block: 11 },
-  { text: "main aapko aur bhi kareeb se mehsoos karta gaya.", block: 11 },
+  { text: "main aapko aur bhi kareeb se mehsoos karta gaya...", block: 11 },
 
   { text: "Saba...", block: 12 },
   { text: "Pehle hamari baatein achhi lagti thi, phir unka intezaar hone laga.", block: 12 },
-  { text: "Pehle aap zindagi ka ek hissa thi, phir dheere dheere usme ghul si gayi.", block: 12 },
+  { text: "Pehle aap zindagi ka ek hissa thi, phir dheere dheere usme ghul si gayi...", block: 12 },
 
   { text: "Saba...", block: 13 },
   { text: "Waqt ke saath log door hote dekhe hain,", block: 13 },
   { text: "lekin aap waqt ke saath aur kareeb aati gayi.", block: 13 },
-  { text: "Aapki aadat kab padi, ye mujhe aaj tak nahi pata.", block: 13 },
+  { text: "Aapki aadat kab padi, ye mujhe aaj tak nahi pata...", block: 13 },
 
   { text: "Aur haan...", block: 14 },
   { text: "Ek complaint bhi hai. 😄", block: 14 },
   { text: "Kabhi kabhi aapka seen karke gayab ho jaana", block: 14 },
-  { text: "aaj bhi samajh nahi aata.", block: 14 },
+  { text: "aaj bhi samajh nahi aata....", block: 14 },
 
   { text: "Lekin phir yaad aata hai...", block: 15 },
   { text: "Ye wahi Saba hain jo daantti bhi hain,", block: 15 },
   { text: "gussa bhi karti hain aur phir care bhi karti hain.", block: 15 },
-  { text: "Aur sach kahun, mujhe aapki ye baat bhi achhi lagti hai.", block: 15 },
+  { text: "Aur sach kahun, mujhe aapki ye baat bhi achhi lagti hai...", block: 15 },
 
   { text: "Saba...", block: 16 },
   { text: "Aapka past jaisa bhi raha ho...", block: 16 },
   { text: "Meri dil se dua hai ki Allah aapka future usse kahin zyada khoobsurat likhe.", block: 16 },
-  { text: "Aapki har genuine dua qubool ho, aur aap hamesha muskurati rahiye.", block: 16 },
+  { text: "Aapki har genuine dua qubool ho, aur aap hamesha muskurati rahiye...", block: 16 },
 
   { text: "Thank you...", block: 17 },
   { text: "Thank you for being you, for all the conversations and memories.", block: 17 },
   { text: "Thank you for every smile, every laugh, and every time you cared.", block: 17 },
-  { text: "And thank you for becoming such a beautiful part of my life.", block: 17 },
+  { text: "And thank you for becoming such a beautiful part of my life... ", block: 17 },
 
   { text: "May Allah bless you with happiness, peace, barakah and success.", block: 18 },
-  { text: "May Allah protect your heart from sadness and fill your life with reasons to smile.", block: 18 },
+  { text: "May Allah protect your heart from sadness and fill your life with reasons to smile...", block: 18 },
   { text: "Ameen. 🤍", block: 18 },
 
   { text: "Aur bas Saba... Itna hi.", block: 19 },
-  { text: "Shayad agar main likhta rahun, to ye letter kabhi khatam hi na ho.", block: 19 },
+  { text: "Shayad agar main likhta rahun, to ye letter kabhi khatam hi na ho...", block: 19 },
   { text: "Thank you so much for reading all of this. 🌸", block: 19 },
   { text: "Happy Birthday once again, Saba. 🤍", block: 19 },
-  { text: "— Sahil", block: 19, italic: true }
+  { text: "— Sahil...", block: 19, italic: true }
 ];
 
 
@@ -136,6 +136,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollTime = useRef(0);
+  const isLeavingRef = useRef(false);
 
   // Auto-scroll to bottom of the writing area during typewriter typing
   useEffect(() => {
@@ -157,6 +158,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
 
     if (charIdx < fullText.length) {
       const timer = setTimeout(() => {
+        if (isLeavingRef.current) return;
         setCurrentLineText(fullText.slice(0, charIdx + 1));
         setCharIdx((prev) => prev + 1);
       }, 50);
@@ -167,6 +169,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
       const pauseDuration = isNewBlock ? 1500 : 800;
 
       const pauseTimer = setTimeout(() => {
+        if (isLeavingRef.current) return;
         setCurrentLineText("");
         setCharIdx(0);
         setActiveLineIdx((prev) => prev + 1);
@@ -176,10 +179,19 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
     }
   }, [activeLineIdx, charIdx, isTypingComplete]);
 
+  // Clean-up hook to stop music when navigating away from this step
+  useEffect(() => {
+    return () => {
+      isLeavingRef.current = true;
+      void stopAllMusic(0); // stop instantly on unmount
+    };
+  }, []);
+
   // ---------------------------------------------------------------
   // New: trigger background music when the block changes.
   // ---------------------------------------------------------------
   useEffect(() => {
+    if (isLeavingRef.current) return;
     if (activeLineIdx < lines.length) {
       const block = lines[activeLineIdx].block;
       // Fire‑and‑forget – handleBlockMusic is async but we don't need to await here.
@@ -189,6 +201,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
 
   // Listen to manual scrolling to trigger music transitions based on viewport visibility
   const handleScroll = () => {
+    if (isLeavingRef.current) return;
     if (activeLineIdx < lines.length) return; // Only track scroll after typing completes
 
     const now = Date.now();
@@ -257,7 +270,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
           className="w-full h-full bg-transparent border border-primary/20 shadow-2xl rounded-2xl p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden cursor-pointer"
         >
           <img src={flower1_1} alt="flower decoration 1" className="absolute top-4 left-2 w-16 h-16 pointer-events-none opacity-80" />
-          <img src={flower4} alt="flower decoration 2" className="absolute top-1 right-[1px] w-44 h-44 object-contain pointer-events-none opacity-80" />
+          <img src={flower4} alt="flower decoration 2" className="absolute top-[-22px] right-[-22px] w-32 h-32 object-contain pointer-events-none opacity-80 z-0" />
 
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent z-20" />
           <div className="absolute left-[40px] sm:left-[55px] top-0 bottom-0 w-[1px] bg-red-400/25 pointer-events-none z-20" />
@@ -271,12 +284,12 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
           </motion.div>
 
           {/* Card Header */}
-          <div className="text-center border-b border-primary/10 pb-3 z-10 shrink-0">
-            <h1 className="font-display text-xl sm:text-2xl text-primary tracking-wide">
+          <div className="text-center border-b border-primary/10 pt-4 pb-3 z-20 shrink-0 max-w-[200px] sm:max-w-[250px] mx-auto relative">
+            <h1 className="font-display text-lg sm:text-xl text-primary tracking-wide leading-snug">
               Baatein Jo Dil Mein Hain
             </h1>
-            <p className="font-body text-[11px] sm:text-xs text-muted-foreground/80 italic leading-relaxed max-w-[280px] mx-auto">
-              "Kuch baatein kehna zaroori hota hai..."
+            <p className="font-body text-[11px] sm:text-xs text-muted-foreground/80 italic leading-relaxed mt-1">
+              Jo shayad main kabhi keh nahi paaya...
             </p>
           </div>
 
@@ -307,19 +320,18 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
                       <p key={`spacer-${i}`} className="leading-[30px] m-0">&nbsp;</p>
                     );
                   }
-                  
+
                   renderedElements.push(
                     <p
                       key={i}
                       data-block={line.block}
-                      className={`font-handwriting text-base sm:text-[17px] text-[#7a6656] leading-[30px] m-0 ${
-                        isCurrent ? "typewriter-cursor" : ""
-                      } ${line.italic ? "italic" : ""}`}
+                      className={`font-handwriting text-[18px] sm:text-[20px] text-[#7a6656] leading-[30px] m-0 ${isCurrent ? "typewriter-cursor" : ""
+                        } ${line.italic ? "italic" : ""}`}
                     >
                       {isCurrent ? currentLineText : line.text}
                     </p>
                   );
-                  
+
                   lastBlockIdx = line.block;
                 }
               }
@@ -350,11 +362,13 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
                     style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover' }}
                     onClick={(e) => {
                       e.stopPropagation();
+                      isLeavingRef.current = true;
+                      void stopAllMusic(0); // stop immediately
                       onPrev();
                     }}
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    Pichla? ✨
+                    Sabuu back...
                   </Button>
                 )}
                 {/* Next Button */}
@@ -363,10 +377,12 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
                   style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover' }}
                   onClick={(e) => {
                     e.stopPropagation();
+                    isLeavingRef.current = true;
+                    void stopAllMusic(0); // stop immediately
                     onNext();
                   }}
                 >
-                  Aage? ✨
+                  Sabuu forword
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </motion.div>
