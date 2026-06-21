@@ -234,8 +234,8 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                 style={{ perspective: "1000px" }}
               >
                 <div className={`relative w-full max-w-[95vw] sm:max-w-[420px] flex items-center justify-center ${isMobile
-                    ? (isShortScreen ? "h-[250px]" : "h-[270px]")
-                    : "h-[330px]"
+                    ? (isShortScreen ? "h-[250px]" : "h-[290px]")
+                    : "h-[410px]"
                   }`}>
                   {albumImages.map((image, index) => {
                     const diff = index - activeIndex;
@@ -306,9 +306,9 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                             }
                           }
                         }}
-                        className={`bg-[#FCFAF2] border-2 border-primary/20 rounded-xl p-3 sm:p-4 flex flex-col justify-between cursor-grab active:cursor-grabbing relative overflow-hidden shadow-[0_12px_28px_rgba(0,0,0,0.15)] ${isMobile
-                            ? (isShortScreen ? "w-[75vw] max-w-[260px] h-[200px]" : "w-[80vw] max-w-[280px] h-[230px]")
-                            : "w-[85vw] max-w-[340px] h-[380px]"
+                        className={`bg-[#FCFAF2] border-2 border-primary/20 rounded-xl p-3 sm:p-4 flex flex-col justify-between items-center cursor-grab active:cursor-grabbing relative overflow-hidden shadow-[0_12px_28px_rgba(0,0,0,0.15)] ${isMobile
+                            ? (isShortScreen ? "w-[180px] h-[240px]" : "w-[210px] h-[280px]")
+                            : "w-[300px] h-[400px]"
                           } ${isActive ? "border-primary/30" : "border-primary/10 opacity-70"
                           } ${!isActive && isMobile ? "blur-[1.2px]" : "blur-none"
                           }`}
@@ -323,7 +323,7 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                             repeat: Infinity,
                             ease: "easeInOut",
                           }}
-                          className="w-full h-full flex flex-col justify-between relative"
+                          className="w-full h-full flex flex-col justify-between items-center relative"
                         >
                           {/* Vintage tape top accent */}
                           <div className="absolute top-[-5px] left-1/2 -translate-x-1/2 w-16 h-4 bg-primary/10 rotate-1 rounded backdrop-blur-sm pointer-events-none border-b border-primary/5" />
@@ -366,10 +366,7 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                           </AnimatePresence>
 
                           {/* Premium Image Container */}
-                          <div className={`w-full rounded-lg overflow-hidden border border-primary/10 shadow-inner bg-cream mt-3 sm:mt-4 relative ${isMobile
-                              ? (isShortScreen ? "h-[135px]" : "h-[160px]")
-                              : "h-[220px]"
-                            }`}>
+                          <div className="w-[72%] rounded-lg overflow-hidden border border-primary/10 shadow-inner bg-cream mt-3 sm:mt-4 relative aspect-[3/4]">
                             <img
                               src={image.src}
                               alt={image.caption}
