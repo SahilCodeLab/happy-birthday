@@ -120,7 +120,7 @@ const OutroStep = () => {
                   <span className="font-body text-[9px] text-muted-foreground/60 italic block">
                     Made for Saba
                   </span>
-                  <span className="font-mono text-[9px] text-muted-foreground/50 tracking-wider">
+                  <span className="font-display text-xs text-muted-foreground/50 tracking-wider">
                     10 Jan 2025 — 10 Jan 2026
                   </span>
                 </div>

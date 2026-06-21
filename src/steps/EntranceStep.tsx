@@ -41,7 +41,7 @@ const EntranceStep = ({ onNext }: EntranceStepProps) => {
       />
 
       {/* --- MAIN CONTENT --- */}
-      <div className="relative z-10 flex flex-col items-center w-full max-w-xl mt-4 sm:mt-8">
+      <div className="relative z-10 flex flex-col items-center justify-between w-full max-w-xl h-full py-8 sm:py-12">
 
         {/* TEXT SECTION */}
         <motion.div
@@ -50,7 +50,7 @@ const EntranceStep = ({ onNext }: EntranceStepProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 1 }}
         >
-          <h1 className="heading-primary text-4xl sm:text-5xl md:text-6xl mb-2">
+          <h1 className="heading-primary text-4xl sm:text-5xl md:text-6xl mb-6 sm:mb-8">
             <TypewriterText text="23 June 2026" speed={80} delay={500} />
           </h1>
 
@@ -74,23 +74,24 @@ const EntranceStep = ({ onNext }: EntranceStepProps) => {
               
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent pointer-events-none animate-pulse" />
               
-              <h2 className="font-signature text-4xl sm:text-5xl md:text-6xl text-primary drop-shadow-md tracking-wider select-none px-2 py-0.5"
+              <h2 className="font-signature text-5xl sm:text-6xl md:text-7xl text-primary drop-shadow-md select-none px-2 py-0.5 tracking-normal leading-normal"
                   style={{ textShadow: "0 2px 8px hsl(var(--gold) / 0.3)" }}>
                 Happy Birthday, Saba.
               </h2>
             </motion.div>
 
-            <p className="font-body text-xs sm:text-sm md:text-base text-muted-foreground/90 italic max-w-xs sm:max-w-md"
+            <p className="font-body text-xs sm:text-sm md:text-base text-foreground/90 italic max-w-xs sm:max-w-md"
               style={{ textShadow: "0 1px 2px rgba(0,0,0,0.05)" }}>
-              Aaj tumhara din hai. <br></br>
-              Aur kuch baatein hain jo main shayad roz nahi kehta.
+              Aaj aap ka birthday hai. 🫶💗 <br></br>
+              Aur is baar 
+              mere paas aap ke liye kuch khaas hai.
               <motion.hr className="divider-gold mt-4 mb-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 0.6 }} />
             </p>
           </div>
         </motion.div>
 
         {/* CANDLES & LOTUS SECTION */}
-        <div className="flex items-end justify-center gap-2 sm:gap-6 md:gap-10 w-full px-2 mt-4 sm:mt-6 relative">
+        <div className="flex items-end justify-center gap-2 sm:gap-6 md:gap-10 w-full px-2 relative my-auto">
 
           <motion.div
             initial={{ opacity: 0, x: -25 }}
@@ -104,7 +105,7 @@ const EntranceStep = ({ onNext }: EntranceStepProps) => {
           <div className="relative z-10 flex items-center justify-center shrink-0">
             {/* Soft pink glow behind the custom image */}
             <motion.div
-              className="absolute bg-pink-500/25 blur-3xl rounded-full w-36 h-36 sm:w-56 sm:h-56"
+              className="absolute bg-pink-500/25 blur-3xl rounded-full w-32 h-32 sm:w-56 sm:h-56"
               animate={{
                 scale: [1, 1.15, 1],
                 opacity: [0.5, 0.8, 0.5],
@@ -138,7 +139,7 @@ const EntranceStep = ({ onNext }: EntranceStepProps) => {
               <img
                 src={lotusImage}
                 alt="Lotus"
-                className="w-[200px] h-[160px] sm:w-[320px] sm:h-[260px] object-contain drop-shadow-2xl mb-[-15px] sm:mb-[-25px]"
+                className="w-[170px] h-[130px] sm:w-[320px] sm:h-[260px] object-contain drop-shadow-2xl mb-[-15px] sm:mb-[-25px]"
               />
             </motion.div>
           </div>
@@ -155,18 +156,18 @@ const EntranceStep = ({ onNext }: EntranceStepProps) => {
         </div>
 
         {/* BUTTON */}
-        <div className="mt-10 sm:mt-16 z-30">
+        <div className="z-30">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 3.5, ease: "easeOut" }}
           >
             <Button
-              className="btn-paper flex items-center justify-center gap-1.5 py-3 px-6 text-[#7a6656] font-bold text-lg min-w-[200px] bg-cover bg-center bg-no-repeat"
+              className="btn-paper flex items-center justify-center gap-1.5 py-2.5 sm:py-3 px-6 text-[#7a6656] font-bold text-base sm:text-lg min-w-[200px] bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
               onClick={onNext}
             >
-              Open Your Gift ✨
+             For You, Saba... 🌸
             </Button>
           </motion.div>
         </div>

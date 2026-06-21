@@ -5,6 +5,7 @@ import EntranceStep from "../steps/EntranceStep";
 import Step1Message from "../steps/Step1Message";
 import Step2Moments from "../steps/Step2Moments";
 import Step3Letter from "../steps/Step3Letter";
+import Step3_5Flower from "../steps/Step3_5Flower";
 import Step4Promises from "../steps/Step4Promises";
 import OutroStep from "../steps/OutroStep";
 
@@ -33,12 +34,25 @@ import FallingPetals from "../components/FallingPetals";
 // Inner Preloader Component
 const Preloader = ({ progress }: { progress: number }) => {
   const loadingMessages = [
-    "Placing roses in the journal... 🌸",
-    "Lighting the gentle candles... 🕯️",
-    "Tuning the background music... 🎵",
-    "Unfolding the sweet memories... ✨",
+    "Creating Something Special For You... 🌸",
+    "A Few Memories Are Being Arranged... 🤍",
+    "Turning Moments Into Memories... ✨",
+    "Gathering A Year Of Memories... 🌸",
+    "Preparing A Little Surprise For You... 💗",
+    "A Journey Through Memories Is About To Begin... 🤍",
+    "Built With Care, Just For You... ❤️",
+    "Collecting Smiles, Memories & Moments... 🌸",
   ];
-  const messageIdx = Math.min(Math.floor(progress / 25), loadingMessages.length - 1);
+  
+  const [messageIdx, setMessageIdx] = useState(0);
+
+  // Decoupled message timer: change message every 2.2 seconds (2200ms)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMessageIdx((prev) => (prev + 1) % loadingMessages.length);
+    }, 2200);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="fixed inset-0 w-screen h-[100dvh] flex flex-col justify-center items-center z-50 bg-[#F7F3EE]">
@@ -65,7 +79,14 @@ const Preloader = ({ progress }: { progress: number }) => {
         </motion.div>
 
         {/* Title */}
-        <h2 className="font-signature text-5xl text-primary mb-3">Saba's Journal</h2>
+        <motion.h2
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="font-display text-4xl sm:text-5xl text-primary font-semibold tracking-wide mb-3 italic"
+        >
+          Happy Birthday, Saba... 🌸
+        </motion.h2>
         <p className="font-display text-sm tracking-[0.15em] text-muted-foreground/80 uppercase mb-8">
           Loading Sweet Memories
         </p>
@@ -83,15 +104,20 @@ const Preloader = ({ progress }: { progress: number }) => {
         <span className="font-handwriting text-2xl text-[#7a6656] block mb-6">{progress}%</span>
 
         {/* Loading Message */}
-        <motion.p
-          key={messageIdx}
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -5 }}
-          className="font-body text-xs italic text-[#7a6656]/80"
-        >
-          {loadingMessages[messageIdx]}
-        </motion.p>
+        <div className="min-h-[50px] flex items-center justify-center overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={messageIdx}
+              initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="font-body text-xs italic text-[#7a6656]/80 text-center leading-relaxed max-w-[280px]"
+            >
+              {loadingMessages[messageIdx]}
+            </motion.p>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
@@ -108,14 +134,14 @@ const PasswordProtection = ({ onUnlock }: { onUnlock: () => void }) => {
     if (password === "saba23/06/2026") {
       onUnlock();
     } else {
-      setError("Incorrect password. Hint: a very special date (sabaDD/MM/YYYY) 🌸");
+      setError("Incorrect password. Hint: sabaDD/MM/YYYY 🌸");
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 500);
     }
   };
 
   return (
-    <div className="fixed inset-0 w-screen h-[100dvh] flex justify-center items-center z-50 bg-[#F7F3EE]">
+    <div className="fixed inset-0 w-screen h-[100dvh] flex flex-col justify-start sm:justify-center items-center z-50 bg-[#F7F3EE] overflow-y-auto py-8 sm:py-4 px-4">
       <div 
         className="fixed inset-0 pointer-events-none opacity-30 z-0"
         style={{
@@ -128,37 +154,36 @@ const PasswordProtection = ({ onUnlock }: { onUnlock: () => void }) => {
       <motion.div
         animate={isShaking ? { x: [-10, 10, -10, 10, -5, 5, 0] } : {}}
         transition={{ duration: 0.5 }}
-        className="w-[90vw] max-w-[400px] bg-[#FCFAF2] border border-primary/20 shadow-2xl rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden z-10"
+        className="w-[92vw] xs:w-[90vw] max-w-[380px] bg-[#FCFAF2] border border-primary/20 shadow-2xl rounded-2xl p-4 sm:p-8 flex flex-col justify-between relative overflow-hidden z-10 my-auto sm:my-0"
       >
-        {/* Binder rings and paper line decoration */}
+        {/* Binder rings decoration */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20" />
-        <div className="absolute left-[30px] top-0 bottom-0 w-[1px] bg-red-400/15 pointer-events-none z-20" />
 
-        <div className="relative z-10 flex flex-col items-center">
+        <div className="relative z-10 flex flex-col items-center w-full">
           {/* Lock Icon */}
-          <div className="p-4 rounded-full bg-primary/10 text-primary mb-5 shadow-inner">
-            <Lock className="w-6 h-6" />
+          <div className="p-3 sm:p-4 rounded-full bg-primary/10 text-primary mb-3 sm:mb-5 shadow-inner">
+            <Lock className="w-5 h-5 sm:w-6 h-6" />
           </div>
 
-          <h2 className="font-display text-2xl sm:text-3xl text-foreground text-center mb-1">
-            Unlock Saba's Gift
+          <h2 className="font-display text-xl sm:text-2xl md:text-3xl text-foreground text-center mb-1">
+            Before We Begin...
           </h2>
-          <p className="font-handwriting text-lg text-muted-foreground text-center mb-6">
-            Enter the password to read the journal...
+          <p className="font-handwriting text-base sm:text-lg text-muted-foreground text-center mb-4 sm:mb-6">
+            A little surprise, made with care for you... 🌸
           </p>
 
           <form onSubmit={handleSubmit} className="w-full space-y-4">
             <div className="space-y-2">
               <input
                 type="password"
-                placeholder="Enter password..."
+                placeholder="Type the password..."
                 value={password}
                 autoFocus
                 onChange={(e) => {
                   setPassword(e.target.value);
                   if (error) setError("");
                 }}
-                className="w-full text-center px-4 py-3 bg-[#FCFAF2] border border-primary/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-foreground font-body placeholder:text-muted-foreground/40 transition-all shadow-inner text-lg"
+                className="w-full text-center px-3 sm:px-4 py-2.5 sm:py-3 bg-[#FCFAF2] border border-primary/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-foreground font-body placeholder:text-muted-foreground/30 transition-all shadow-inner text-base sm:text-lg"
               />
               <AnimatePresence>
                 {error && (
@@ -166,7 +191,7 @@ const PasswordProtection = ({ onUnlock }: { onUnlock: () => void }) => {
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="text-red-500 font-handwriting text-base text-center mt-1"
+                    className="text-red-500 font-handwriting text-sm sm:text-base text-center mt-1"
                   >
                     {error}
                   </motion.p>
@@ -176,16 +201,16 @@ const PasswordProtection = ({ onUnlock }: { onUnlock: () => void }) => {
 
             <Button
               type="submit"
-              className="btn-paper w-full flex items-center justify-center gap-1.5 py-3 px-6 text-[#7a6656] font-bold text-lg bg-cover bg-center bg-no-repeat mt-4"
+              className="btn-paper w-full flex items-center justify-center gap-1.5 py-2.5 sm:py-3 px-4 sm:px-6 text-[#7a6656] font-bold text-base sm:text-lg bg-cover bg-center bg-no-repeat mt-3 sm:mt-4"
               style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
             >
-              Unlock Journal 🔑
+              Begin The Journey ✨
             </Button>
           </form>
         </div>
 
         {/* Small Elegant Footer */}
-        <div className="border-t border-primary/10 pt-4 mt-6 flex justify-between items-center text-[#7a6656]/60 text-[10px] font-mono">
+        <div className="border-t border-primary/10 pt-3 sm:pt-4 mt-4 sm:mt-6 flex justify-between items-center text-[#7a6656]/60 text-xs font-display tracking-widest w-full">
           <span>FOR SABA</span>
           <span>23 JUNE 2026</span>
         </div>
@@ -197,6 +222,7 @@ const PasswordProtection = ({ onUnlock }: { onUnlock: () => void }) => {
 const Index = () => {
   const [isPreloading, setIsPreloading] = useState(true);
   const [preloadProgress, setPreloadProgress] = useState(0);
+  const [displayProgress, setDisplayProgress] = useState(0);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   
@@ -219,7 +245,9 @@ const Index = () => {
       img5,
       img6,
       img7,
-      img8
+      img8,
+      "https://media.tenor.com/b6RK49IXUTMAAAAC/bubu-dubu-sseeyall.gif",
+      "https://media.tenor.com/0cNM_9li440AAAAC/dudu-giving-flowers-bubu-flowers.gif"
     ];
 
     const audiosToPreload = [
@@ -236,17 +264,11 @@ const Index = () => {
       loadedAssets++;
       const progress = Math.min(100, Math.round((loadedAssets / totalAssets) * 100));
       setPreloadProgress(progress);
-      if (loadedAssets >= totalAssets) {
-        setTimeout(() => {
-          setIsPreloading(false);
-        }, 800);
-      }
     };
 
     // Fail-safe timer (10 seconds max)
     const failSafeTimer = setTimeout(() => {
       setPreloadProgress(100);
-      setIsPreloading(false);
     }, 10000);
 
     // Preload Images
@@ -277,6 +299,31 @@ const Index = () => {
     return () => clearTimeout(failSafeTimer);
   }, []);
 
+  // Smooth Display Progress Increments (Simulating loading duration for cached visits)
+  useEffect(() => {
+    if (!isPreloading) return;
+
+    const interval = setInterval(() => {
+      setDisplayProgress((prev) => {
+        if (prev < 99) {
+          // Increment smoothly by an average of 0.5% per 90ms (total climb time is ~17.8s to reach 99%)
+          const increment = 0.4 + Math.random() * 0.2;
+          return Math.min(99, prev + increment);
+        } else if (preloadProgress === 100) {
+          // If assets are loaded and display progress is 99%, transition out
+          clearInterval(interval);
+          setTimeout(() => {
+            setIsPreloading(false);
+          }, 600);
+          return 100;
+        }
+        return prev;
+      });
+    }, 90);
+
+    return () => clearInterval(interval);
+  }, [preloadProgress, isPreloading]);
+
   const nextStep = () => {
     setCurrentStep(prev => prev + 1);
   };
@@ -294,6 +341,7 @@ const Index = () => {
   };
 
   const steps = [
+    <Step3_5Flower key="step3_5" onNext={nextStep} />,
     <EntranceStep key="entrance" onNext={handleStart} />,
     <Step1Message key="step1" onNext={nextStep} />,
     <Step2Moments key="step2" onNext={nextStep} onPrev={prevStep} />,
@@ -307,7 +355,7 @@ const Index = () => {
       <AnimatePresence mode="wait">
         {isPreloading ? (
           <motion.div key="preloader" className="w-full h-full">
-            <Preloader progress={preloadProgress} />
+            <Preloader progress={Math.round(displayProgress)} />
           </motion.div>
         ) : !isUnlocked ? (
           <motion.div 
