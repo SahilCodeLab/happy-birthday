@@ -47,6 +47,119 @@ const BLOCK_TO_TRACK: Record<number, TrackInfo> = {
 let currentTrackId: string | null = null; // ID of the currently active music track
 const alreadySeeked = new Set<string>(); // Tracks that have been seeked once on first play
 
+// Global Audio State
+let isGlobalMuted = false;
+let isGlobalPaused = false;
+const listeners = new Set<() => void>();
+
+/** Subscribe to changes in play/pause/mute state */
+export function subscribeMusicState(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+function notifyListeners() {
+  listeners.forEach((l) => l());
+}
+
+/** Get the current play/pause and mute state */
+export function getMusicState() {
+  return {
+    isPlaying: !isGlobalPaused && !!currentTrackId,
+    muted: isGlobalMuted,
+    currentTrackId
+  };
+}
+
+/** Toggle mute globally for all music elements */
+export function toggleGlobalMute() {
+  setGlobalMute(!isGlobalMuted);
+}
+
+/** Set mute state globally for all music elements */
+export function setGlobalMute(mute: boolean) {
+  isGlobalMuted = mute;
+  const trackIds = ["trackEnvelope", "track0", "track10", "track14", "track16"];
+  trackIds.forEach((id) => {
+    const el = document.getElementById(id) as HTMLAudioElement | null;
+    if (el) {
+      el.muted = mute;
+      if (!mute && id === currentTrackId) {
+        isGlobalPaused = false; // clear global pause state
+        if (el.paused) {
+          el.play().catch((err) => console.log("Play failed on unmute:", err));
+        }
+      }
+    }
+  });
+  notifyListeners();
+}
+
+/** Toggle play/pause globally for the active track */
+export function toggleGlobalPlay() {
+  setGlobalPlay(isGlobalPaused);
+}
+
+/** Set play/pause state globally for all music elements */
+export function setGlobalPlay(play: boolean) {
+  isGlobalPaused = !play;
+  
+  if (!currentTrackId) {
+    // If no track is active yet, default to trackEnvelope
+    currentTrackId = "trackEnvelope";
+  }
+
+  const trackIds = ["trackEnvelope", "track0", "track10", "track14", "track16"];
+  trackIds.forEach((id) => {
+    const el = document.getElementById(id) as HTMLAudioElement | null;
+    if (el) {
+      if (play) {
+        if (id === currentTrackId) {
+          el.muted = isGlobalMuted;
+          el.play().catch((err) => console.log("Play failed on setGlobalPlay:", err));
+        } else {
+          el.pause();
+        }
+      } else {
+        el.pause();
+      }
+    }
+  });
+  notifyListeners();
+}
+
+/** Start the envelope step music (Pixabay piano track) with clean transitions */
+export async function playEnvelopeMusic(): Promise<void> {
+  const targetId = "trackEnvelope";
+  const targetEl = document.getElementById(targetId) as HTMLAudioElement | null;
+  if (!targetEl) {
+    console.warn(`Audio element #${targetId} not found`);
+    return;
+  }
+
+  isGlobalPaused = false;
+  currentTrackId = targetId;
+
+  // Pause all other tracks instantly to avoid overlapping sounds, including envelope
+  const trackIds = ["trackEnvelope", "track0", "track10", "track14", "track16"];
+  trackIds.forEach((id) => {
+    const el = document.getElementById(id) as HTMLAudioElement | null;
+    if (el) {
+      el.pause();
+      el.volume = 0;
+    }
+  });
+
+  targetEl.muted = isGlobalMuted;
+  if (targetEl.paused) {
+    targetEl.volume = 0.25;
+    targetEl.play().catch((err) => console.log("Play envelope failed:", err));
+  }
+  notifyListeners();
+}
+
 /**
  * Cross‑fade two <audio> elements.
  *   - Clears any existing intervals to prevent volume fighting.
@@ -70,6 +183,20 @@ function crossFade(
   if ((to as any).fadeInterval) {
     clearInterval((to as any).fadeInterval);
     (to as any).fadeInterval = null;
+  }
+
+  // Sync mute state on the new track
+  to.muted = isGlobalMuted;
+
+  // If globally paused, just update volume/pause status without starting playback
+  if (isGlobalPaused) {
+    if (from) {
+      from.pause();
+      from.volume = 0;
+    }
+    to.volume = targetVol;
+    to.pause();
+    return Promise.resolve();
   }
 
   // Calculate dynamic volume steps based on current volumes to avoid jumps
@@ -123,6 +250,7 @@ function crossFade(
  * Uses a strict repeat-prevention guard to prevent re-triggering or resetting.
  */
 export async function handleBlockMusic(blockNumber: number): Promise<void> {
+  isGlobalPaused = false; // ensure music plays on step/block transition
   const mapping = BLOCK_TO_TRACK[blockNumber];
   if (!mapping) return; // safety - block doesn't exist
 
@@ -133,10 +261,23 @@ export async function handleBlockMusic(blockNumber: number): Promise<void> {
     return;
   }
 
-  // 2. STRICT REPEAT-PREVENTION GUARD
+  // Pause all other tracks (including envelope) to ensure only the target plays
+  const trackIds = ["trackEnvelope", "track0", "track10", "track14", "track16"];
+  trackIds.forEach((id) => {
+    if (id !== targetId) {
+      const el = document.getElementById(id) as HTMLAudioElement | null;
+      if (el) {
+        el.pause();
+        el.volume = 0;
+      }
+    }
+  });
+
+  // STRICT REPEAT-PREVENTION GUARD
   if (currentTrackId === targetId) {
-    // If it's already the current track, make sure it's actually playing (in case autoplay blocked it initially)
-    if (targetEl.paused) {
+    // If it's already the current track, make sure it's actually playing if the site is not paused
+    if (targetEl.paused && !isGlobalPaused) {
+      targetEl.muted = isGlobalMuted;
       targetEl.play().catch((err) => console.log("Play failed on retry:", err));
     }
     return; // Exit immediately without resetting volume, time, or play state
@@ -146,7 +287,6 @@ export async function handleBlockMusic(blockNumber: number): Promise<void> {
   const previousTrackId = currentTrackId;
   currentTrackId = targetId;
 
-  // 3. CROSSFADE LOGIC
   // Handle first-activation seeking safely (only if paused, i.e. first launch)
   if (mapping.startSeek !== undefined && !alreadySeeked.has(targetId)) {
     if (targetEl.paused) {
@@ -169,15 +309,16 @@ export async function handleBlockMusic(blockNumber: number): Promise<void> {
     : null;
 
   await crossFade(previousEl, targetEl);
+  notifyListeners();
 }
 
 /**
  * Stop all background tracks smoothly, or instantly if durationMs is 0.
  */
 export async function stopAllMusic(durationMs = 1200): Promise<void> {
-  const trackIds = ["track0", "track10", "track14", "track16"];
+  const trackIds = ["trackEnvelope", "track0", "track10", "track14", "track16"];
 
-  // 1. Immediately clear any running volume fade intervals on all elements
+  // Immediately clear any running volume fade intervals on all elements
   trackIds.forEach((id) => {
     const el = document.getElementById(id) as HTMLAudioElement | null;
     if (el) {
@@ -188,7 +329,9 @@ export async function stopAllMusic(durationMs = 1200): Promise<void> {
     }
   });
 
-  // 2. For instant stop (durationMs === 0), pause all elements and set volume to 0 immediately
+  isGlobalPaused = true;
+
+  // For instant stop (durationMs === 0), pause all elements and set volume to 0 immediately
   if (durationMs === 0) {
     trackIds.forEach((id) => {
       const el = document.getElementById(id) as HTMLAudioElement | null;
@@ -198,10 +341,11 @@ export async function stopAllMusic(durationMs = 1200): Promise<void> {
       }
     });
     currentTrackId = null;
+    notifyListeners();
     return Promise.resolve();
   }
 
-  // 3. Otherwise, perform a smooth fade out on the active track
+  // Otherwise, perform a smooth fade out on the active track
   if (!currentTrackId) return;
 
   const currentEl = document.getElementById(currentTrackId) as HTMLAudioElement | null;
@@ -230,4 +374,5 @@ export async function stopAllMusic(durationMs = 1200): Promise<void> {
   }
   
   currentTrackId = null;
+  notifyListeners();
 }

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import AudioPlayer, { AudioPlayerHandle } from "../components/AudioPlayer";
+import { playEnvelopeMusic } from "../musicController";
 import EntranceStep from "../steps/EntranceStep";
 import Step1Message from "../steps/Step1Message";
 import Step2Moments from "../steps/Step2Moments";
@@ -226,8 +226,6 @@ const Index = () => {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   
-  const audioRef = useRef<AudioPlayerHandle>(null);
-
   // Asset preloading routine
   useEffect(() => {
     const imagesToPreload = [
@@ -334,9 +332,7 @@ const Index = () => {
 
   // Jab user "Begin" click karega, tab audio play hoga
   const handleStart = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-    }
+    void playEnvelopeMusic();
     nextStep();
   };
 
@@ -347,7 +343,7 @@ const Index = () => {
     <Step2Moments key="step2" onNext={nextStep} onPrev={prevStep} />,
     <Step3Letter key="step3" onNext={nextStep} onPrev={prevStep} />,
     <Step4Promises key="step4" onNext={nextStep} onPrev={prevStep} />,
-    <OutroStep key="outro" />,
+    <OutroStep key="outro" onPrev={prevStep} />,
   ];
 
   return (
@@ -389,12 +385,6 @@ const Index = () => {
               style={{
                 background: `radial-gradient(ellipse at center top, hsl(var(--candle-glow) / 0.08), transparent 70%)`,
               }}
-            />
-
-            {/* ONLINE AUDIO PLAYER */}
-            <AudioPlayer 
-              ref={audioRef}
-              audioSrc="https://cdn.pixabay.com/download/audio/2022/03/09/audio_822ca87a29.mp3?filename=piano-moment-119623.mp3" 
             />
 
             {/* Step indicator */}

@@ -166,7 +166,7 @@ export default function Step1Message({ onNext }: Step1Props) {
                 {!isBreaking ? (
                   <>
                     {/* Wax Seal Button (Heart Shaped) */}
-                    <motion.button style={{ boxShadow: '0 8px 20px rgba(120, 0, 30, 0.25), inset 0 2px 4px rgba(255,255,255,0.25), inset 0 -3px 6px rgba(0,0,0,0.15)' }}
+                    <motion.button
                       animate={{ x: offset.x, y: offset.y }}
                       transition={{ type: "spring", stiffness: 350, damping: 22 }}
                       whileHover={{ scale: 1.05 }}
@@ -174,7 +174,7 @@ export default function Step1Message({ onNext }: Step1Props) {
                       onMouseEnter={handleEvade}
                       onTouchStart={handleEvade}
                       onClick={handleSealClick}
-                      className="w-20 h-20 flex items-center justify-center cursor-pointer relative z-30 focus:outline-none animate-[pulse_2.5s_infinite_ease-in-out]"
+                      className="w-20 h-20 flex items-center justify-center cursor-pointer relative z-30 focus:outline-none bg-transparent border-none shadow-none outline-none animate-[pulse_2.5s_infinite_ease-in-out]"
                     >
                       <div className="relative w-20 h-20 flex items-center justify-center select-none">
                         {/* Pulsing ring around the seal */}
@@ -254,7 +254,7 @@ export default function Step1Message({ onNext }: Step1Props) {
                       </div>
                     </motion.button>
 
-                    <span className="text-[11px] font-display text-primary/80 opacity-80 tracking-[2px] uppercase animate-pulse min-h-[16px] text-center font-medium">
+                    <span className="text-xs sm:text-sm font-display text-secondary font-semibold opacity-95 tracking-[2px] uppercase animate-pulse min-h-[16px] text-center">
                       {attempts === 0 && "Tap to break the seal ✨"}
                       {attempts === 1 && "Arre... rukiye thoda 🤭"}
                       {attempts === 2 && "Haan, ab click kijiye 🌸"}
@@ -373,13 +373,10 @@ export default function Step1Message({ onNext }: Step1Props) {
                             strokeWidth="1"
                           />
                         </svg>
-                        <span className="absolute inset-0 flex items-center justify-center font-signature text-3xl sm:text-4xl text-primary-foreground/90 font-bold pt-1">
-                          S
-                        </span>
                       </motion.div>
                     </div>
 
-                    <span className="text-[14px] font-display text-primary-foreground tracking-[2px] uppercase animate-pulse min-h-[16px] text-center font-medium drop-shadow">
+                    <span className="text-[16px] font-display text-primary-foreground font-bold tracking-[2px] uppercase animate-pulse min-h-[16px] text-center drop-shadow-lg">
                       Breaking Seal... 🌷
                     </span>
                   </>

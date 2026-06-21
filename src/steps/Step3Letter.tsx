@@ -368,7 +368,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
                     }}
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    Sabuu back...
+                   Wapas... 🌷
                   </Button>
                 )}
                 {/* Next Button */}
@@ -382,7 +382,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
                     onNext();
                   }}
                 >
-                  Sabuu forword
+                 Lamhe... 🤍
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </motion.div>

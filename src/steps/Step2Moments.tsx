@@ -85,6 +85,10 @@ export default function Step2Moments({ onNext }: Step2Props) {
         setCurrentLineText("");
         setCharIdx(0);
         setActiveLineIdx((prev) => prev + 1);
+        // If entering a new block, start its associated music
+        if (isNewBlock && nextLine) {
+          void handleBlockMusic(nextLine.block);
+        }
       }, pauseDuration);
 
       return () => clearTimeout(pauseTimer);
@@ -249,7 +253,7 @@ Ek yaadgaar safar ki shuruaat."
                 }}
               >
                 <img src={flowerBtn} alt="flower button" className="w-6 h-6 mr-2" />
-                <span className="text-[#7a6656] font-bold">Aage Chalein ✨ </span><ArrowRight size={16} />
+                <span className="text-[#7a6656] font-bold">Aur Phir... 🌷  </span><ArrowRight size={16} />
               </Button>
             </div>
           </motion.div>

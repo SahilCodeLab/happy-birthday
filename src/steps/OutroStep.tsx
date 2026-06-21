@@ -6,8 +6,8 @@ import FallingPetals from "../components/FallingPetals";
 import CandleFlame from "../components/CandleFlame";
 import GoldenSparkles from "../components/GoldenSparkles";
 import buttonTexture from "../saba/button texture.jpg";
-
-const OutroStep = () => {
+import SoftConfetti from "../components/SoftConfetti";
+const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
   const [isDimmed, setIsDimmed] = useState(false);
 
   return (
@@ -25,6 +25,7 @@ const OutroStep = () => {
         />
       </div>
 
+<SoftConfetti className="absolute inset-0 pointer-events-none" />
       <AnimatePresence mode="wait">
         {!isDimmed ? (
           <motion.div
@@ -33,7 +34,7 @@ const OutroStep = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className="w-[90vw] max-w-[420px] bg-[#FCFAF2] border border-primary/20 shadow-2xl rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden text-center z-10"
+            className="w-[90vw] max-w-[420px] bg-white/30 backdrop-blur-xl bg-gradient-to-b from-white/10 via-white/30 to-white/10 border border-primary/20 shadow-2xl rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden text-center z-10"
           >
             {/* Elegant Golden Sparkles drifting over the page */}
             <GoldenSparkles />
@@ -44,7 +45,7 @@ const OutroStep = () => {
 
 
             {/* Content Container */}
-            <div className="relative z-10 py-6 px-2 sm:px-4 flex flex-col items-center justify-center flex-1 my-auto">
+            <div className="relative z-10 py-6 px-2 sm:px-4 flex flex-col items-center justify-center">
               
               {/* Centered Glowing Lotus Flower */}
               <motion.div
@@ -102,15 +103,27 @@ const OutroStep = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 2.2 }}
-              className="mt-6 mb-4 relative z-20 shrink-0"
+              className="mt-0 mb-4 relative z-20 shrink-0"
             >
-              <Button
-                onClick={() => setIsDimmed(true)}
-                className="btn-paper px-6 py-2 text-xs sm:text-sm shadow-md hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 mx-auto text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
-              >
-                Blow out the candle 🕯️
-              </Button>
+              <div className="flex items-center justify-center w-full gap-2">
+                  <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    onClick={() => { if (onPrev) onPrev(); else setIsDimmed(false); }}
+                    className="btn-paper px-4 py-2 flex items-center justify-center text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
+                    style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                  >
+                    ← Back
+                  </motion.button>
+                  <Button
+                    onClick={() => setIsDimmed(true)}
+                    className="btn-paper px-4 py-2 flex items-center justify-center text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
+                    style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                  >
+                    Blow out the candle 🕯️
+                  </Button>
+                </div>
             </motion.div>
 
             {/* Small Elegant Footer (Signature & Date) */}
