@@ -18,7 +18,6 @@ import img1 from "../saba/first photo.jpg";
 import img2 from "../saba/2nd.jpg";
 import img3 from "../saba/3.jpg";
 import img4 from "../saba/4.jpg";
-import img5 from "../saba/5.jpg";
 import img6 from "../saba/6.jpg";
 import img7 from "../saba/7.jpg";
 import img8 from "../saba/8.jpg";
@@ -35,16 +34,15 @@ interface Step4Props {
 }
 
 export const albumImages = [
-  { src: img1, caption: "This has always been one of my favorite pictures of you. 🌸❤️✨", date: "22 march 2026" },
+  { src: img1, caption: "This has always been one of my favorite pictures of you. 🌸♥️✨", date: "22 march 2026" },
   { src: img2, caption: "Har ek lamha jo tumhare sath beeta... 💖", date: "24 March 2026" },
   { src: img3, caption: "Sukoon bhari baatein, aur dher saari yaadein 🌟", date: "24 March 2026" },
   { src: img4, caption: "Tumhari hansi jaise koi khoobsurat geet ho 🌸", date: "24 March 2026" },
-  { src: img5, caption: "Saba, you bring warmth and light to everything 💕", date: "24 March 2026" },
   { src: img6, caption: "Ye pyaare pal hamesha dil ke paas rahenge 💫", date: "12 December 2025" },
   { src: img7, caption: "Tumhare chehre ki khushi hi sab kuch hai 🌹", date: "12 December 2025" },
   { src: img8, caption: "Always keeping these memories safe in my heart 🥰", date: "12 December 2025" },
   { src: img10, caption: "Har din tumhare hone se aur bhi rangeen ho jata hai 🎨", date: "12 December 2025" },
-  { src: img11, caption: "Tumhari sadgi me hi tumhari sabse badi khoobsurati hai 🤍", date: "15 February 2026" },
+  { src: img11, caption: "Tumhari sadgi me hi tumhari sabse badi khoobsurati hai ♥️", date: "15 February 2026" },
   { src: img13, caption: "Dua hai ki tum hamesha aisi hi muskurati raho 🌸", date: "23 March 2026" },
   { src: img14, caption: "Ek pyaari si subah, aur tumhari dher saari baatein ☀️", date: "23 March 2026" },
   { src: img15, caption: "Tumhare saath har pal ek nayi umeed lekar aata hai ✨", date: "23 March 2026" },
@@ -67,7 +65,7 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
     "Shayad ye bas photos hi hain,",
     "Lekin mujhe ye hamesha bahut pasand rahi hain.",
     "Pata nahi kyun,",
-    "Par inhe dekh kar aaj bhi achha lagta hai. 🤍",
+    "Par inhe dekh kar aaj bhi achha lagta hai. ♥️",
     "Isliye socha,",
     "Aaj in pyare lamhon ko bhi yahan jagah de doon. ✨",
   ];
@@ -144,6 +142,16 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
           <h1 className="font-display text-lg sm:text-3xl text-primary tracking-widest uppercase mt-10">
             A Few Precious Moments 🌸
           </h1>
+
+          {!showIntro && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.85 }}
+              className="font-handwriting text-sm sm:text-lg text-[#7a6656] mt-1 mb-2 max-w-[280px] sm:max-w-md text-center italic font-normal"
+            >
+              "This is my favorite photo of you... 🪷"
+            </motion.p>
+          )}
 
           {/* Dynamic Read Note Button */}
           {!showIntro && (
@@ -245,9 +253,9 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                 className="w-full flex-1 flex items-center justify-center relative overflow-visible"
                 style={{ perspective: "1000px" }}
               >
-                <div className={`relative w-full max-w-[95vw] sm:max-w-[420px] flex items-center justify-center ${isMobile
-                  ? (isShortScreen ? "h-[250px]" : "h-[290px]")
-                  : "h-[410px]"
+                <div className={`relative w-full max-w-[95vw] sm:max-w-[360px] flex items-center justify-center ${isMobile
+                  ? (isShortScreen ? "h-[210px]" : "h-[245px]")
+                  : "h-[340px]"
                   }`}>
                   {albumImages.map((image, index) => {
                     const diff = index - activeIndex;
@@ -318,9 +326,9 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                             }
                           }
                         }}
-                        className={`bg-[#FCFAF2] border-2 border-primary/20 rounded-xl p-3 sm:p-4 flex flex-col justify-between items-center cursor-grab active:cursor-grabbing relative overflow-hidden shadow-[0_12px_28px_rgba(0,0,0,0.15)] ${isMobile
-                          ? (isShortScreen ? "w-[180px] h-[240px]" : "w-[210px] h-[280px]")
-                          : "w-[300px] h-[400px]"
+                        className={`bg-[#FCFAF2] border-2 border-primary/20 rounded-xl p-2 sm:p-2.5 flex flex-col justify-between items-center cursor-grab active:cursor-grabbing relative overflow-hidden shadow-[0_12px_28px_rgba(0,0,0,0.15)] ${isMobile
+                          ? (isShortScreen ? "w-[155px] h-[200px]" : "w-[175px] h-[230px]")
+                          : "w-[245px] h-[320px]"
                           } ${isActive ? "border-primary/30" : "border-primary/10 opacity-70"
                           } ${!isActive && isMobile ? "blur-[1.2px]" : "blur-none"
                           }`}
@@ -337,8 +345,7 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                           }}
                           className="w-full h-full flex flex-col justify-between items-center relative"
                         >
-                          {/* Vintage tape top accent */}
-                          <div className="absolute top-[-5px] left-1/2 -translate-x-1/2 w-16 h-4 bg-primary/10 rotate-1 rounded backdrop-blur-sm pointer-events-none border-b border-primary/5" />
+
 
                           {/* Date stamp */}
                           <div className="absolute top-[-2px] left-1 text-[9px] font-mono text-primary/60 tracking-wider">
@@ -377,25 +384,23 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                             )}
                           </AnimatePresence>
 
-                          {/* Premium Image Container */}
-                          <div className="w-[72%] rounded-lg overflow-hidden border border-primary/10 shadow-inner bg-cream mt-3 sm:mt-4 relative aspect-[3/4]">
-                            <img
-                              src={image.src}
-                              alt={image.caption}
-                              className="w-full h-full object-cover select-none pointer-events-none"
-                              loading="eager"
-                            />
-
-                            {/* Subtle paper grain texture overlay */}
-                            <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-noise" />
+                          {/* Photo Frame Wrapper */}
+                          <div className="w-[84%] relative mt-2 sm:mt-2.5 aspect-[3/4] shrink-0">
+                            {/* Premium Image Container */}
+                            <div className="w-full h-full rounded-lg overflow-hidden border border-primary/10 shadow-inner bg-cream relative">
+                              <img
+                                src={image.src}
+                                alt={image.caption}
+                                className="w-full h-full object-cover select-none pointer-events-none"
+                                loading="eager"
+                              />
+                              {/* Subtle paper grain texture overlay */}
+                              <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-noise" />
+                            </div>
                           </div>
 
-                          {/* Caption text */}
-                          <div className="flex-1 flex flex-col justify-center items-center px-1 py-1 sm:py-1.5 text-center">
-                            <p className="font-handwriting text-[#7a6656] text-xs sm:text-[15px] leading-relaxed m-0 italic font-medium">
-                              {image.caption}
-                            </p>
-                          </div>
+                          {/* Empty bottom polaroid margin spacer */}
+                          <div className="flex-1" />
                         </motion.div>
                       </motion.div>
                     );

@@ -37,7 +37,7 @@ const SoftConfetti = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-10">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-50">
       {pieces.map((piece) => (
         <motion.div
           key={piece.id}

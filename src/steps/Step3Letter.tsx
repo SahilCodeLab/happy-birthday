@@ -17,9 +17,9 @@ interface Step3Props {
 }
 
 export const lines = [
-  { text: "Happy Birthday, Saba. 🌸", block: 0 },
+  { text: "Happy Birthday, Saba.🌷", block: 0 },
   { text: "Pata hai...", block: 0 },
-  { text: "Ye aapke liye meri second birthday wish hai.", block: 0 },
+  { text: "Ye aapke liye meri second birthday wish hai...", block: 0 },
   { text: "Aur jab main ye sab likhne baitha,", block: 0 },
   { text: "to mujhe samajh hi nahi aaya ki shuruaat kahan se karun.", block: 0 },
 
@@ -34,7 +34,7 @@ export const lines = [
   { text: "bas yun hi nikal gaya.", block: 2 },
   { text: "Lekin phir main ruk kar sochta hoon...", block: 2 },
   { text: "To realize hota hai ki is ek saal me", block: 2 },
-  { text: "kitni yaadein, kitni baatein aur kitne moments jud gaye hain.", block: 2 },
+  { text: "kitni yaadein, kitni baatein aur kitne moments jud gaye hain. ", block: 2 },
 
   { text: "Ab tak hum sirf chaar baar mile hain.", block: 3 },
   { text: "Sirf chaar baar.", block: 3 },
@@ -56,7 +56,7 @@ export const lines = [
   { text: "Aur phir jawab milta hai...", block: 6 },
   { text: "Shayad isliye...", block: 6 },
   { text: "Kyuki un sab baaton ke peeche koi aur nahi,", block: 6 },
-  { text: "Aap thi, Saba.", block: 6 },
+  { text: "Aap thi, Saba.🌷", block: 6 },
 
   { text: "Shayad aapko kabhi andaaza bhi na ho...", block: 7 },
   { text: "Lekin aapke meri life me aane ka impact", block: 7 },
@@ -65,53 +65,53 @@ export const lines = [
   { text: "Main jab ek saal pehle wale khud ko dekhta hoon...", block: 8 },
   { text: "Aur aaj wale khud ko dekhta hoon...", block: 8 },
   { text: "To mujhe ek bada difference nazar aata hai.", block: 8 },
-  { text: "Aur us difference me aapka bhi ek hissa hai.", block: 8 },
+  { text: "Aur us difference me aapka bhi ek bada hissa hai.🫶", block: 8 },
 
   { text: "Aap mujhe kahan se kahan le aayi hain...", block: 9 },
   { text: "Ye shayad main kabhi properly explain bhi na kar paun.", block: 9 },
   { text: "Ye line main aapko impress karne ke liye nahi likh raha,", block: 9 },
   { text: "Main bas sach likh raha hoon, aapne meri zindagi ko behtar bana diya.", block: 9 },
 
-  { text: "Saba...", block: 10 },
+  { text: "Saba...🌷", block: 10 },
   { text: "Pata hi nahi chala kab aap sirf ek naam se", block: 10 },
   { text: "badhkar meri ek aadat ban gayi...", block: 10 },
 
-  { text: "Saba...", block: 11 },
+  { text: "Saba...🌷", block: 11 },
   { text: "Jaise jaise waqt guzarta gaya,", block: 11 },
   { text: "main aapko aur bhi kareeb se mehsoos karta gaya...", block: 11 },
 
-  { text: "Saba...", block: 12 },
+  { text: "Saba...🌷", block: 12 },
   { text: "Pehle hamari baatein achhi lagti thi, phir unka intezaar hone laga.", block: 12 },
   { text: "Pehle aap zindagi ka ek hissa thi, phir dheere dheere usme ghul si gayi...", block: 12 },
 
-  { text: "Saba...", block: 13 },
+  { text: "Saba...🌷", block: 13 },
   { text: "Waqt ke saath log door hote dekhe hain,", block: 13 },
   { text: "lekin aap waqt ke saath aur kareeb aati gayi.", block: 13 },
   { text: "Aapki aadat kab padi, ye mujhe aaj tak nahi pata...", block: 13 },
 
   { text: "Aur haan...", block: 14 },
-  { text: "Ek complaint bhi hai. 😄", block: 14 },
+  { text: "Ek complaint bhi hai. 😕", block: 14 },
   { text: "Kabhi kabhi aapka seen karke gayab ho jaana", block: 14 },
   { text: "aaj bhi samajh nahi aata....", block: 14 },
 
   { text: "Lekin phir yaad aata hai...", block: 15 },
   { text: "Ye wahi Saba hain jo daantti bhi hain,", block: 15 },
-  { text: "gussa bhi karti hain aur phir care bhi karti hain.", block: 15 },
+  { text: "gussa bhi karti hain aur phir care bhi karti hain.♥️", block: 15 },
   { text: "Aur sach kahun, mujhe aapki ye baat bhi achhi lagti hai...", block: 15 },
 
-  { text: "Saba...", block: 18 },
+  { text: "Saba...🌷", block: 18 },
   { text: "Aapka past jaisa bhi raha ho...", block: 18 },
   { text: "Meri dil se dua hai ki Allah aapka future usse kahin zyada khoobsurat likhe.", block: 18 },
   { text: "Aapki har genuine dua qubool ho, aur aap hamesha muskurati rahiye...", block: 18 },
 
-  { text: "May Allah bless you with good health, happiness, peace, and endless barakah. 🤍", block: 19 },
+  { text: "May Allah bless you with good health🫶, happiness, peace, and endless barakah. ♥️", block: 19 },
   { text: "May He make your present beautiful and your future bright. ✨", block: 19 },
   { text: "May your heart always find comfort in what is best for you. 🌸", block: 19 },
 
   { text: "May Allah grant you success in your studies, your dreams,", block: 20 },
   { text: "and every path you choose to walk.", block: 20 },
   { text: "May every difficulty be followed by ease,", block: 20 },
-  { text: "every worry by peace, and every tear by a reason to smile. 🤍", block: 20 },
+  { text: "every worry by peace, and every tear by a reason to smile. ✨♥️", block: 20 },
 
   { text: "Whenever you feel lost, may Allah guide you.", block: 21 },
   { text: "Whenever you feel tired, may He give you strength.", block: 21 },
@@ -122,8 +122,8 @@ export const lines = [
   { text: "May every beautiful dream you have come closer to reality. ✨", block: 22 },
   { text: "And may every step you take lead you towards something better.", block: 22 },
 
-  { text: "And one more thing, Saba... 🤍", block: 23 },
-  { text: "May Allah never let your heart feel the pain of losing something truly precious. 🤍", block: 23 },
+  { text: "And one more thing, Saba...💗", block: 23 },
+  { text: "May Allah never let your heart feel the pain of losing something truly precious. ♥️", block: 23 },
 
   { text: "But if there ever comes a day when life feels difficult...", block: 24 },
   { text: "Or your heart feels a little too heavy...", block: 24 },
@@ -134,8 +134,8 @@ export const lines = [
   { text: "I will always try to understand.", block: 25 },
   { text: "And I will always try to be there whenever you need someone to listen.. ✨", block: 25 },
 
-  { text: "May Allah always protect your heart, your smile, and the people you love. 🤍", block: 26 },
-  { text: "Ameen. 🌸", block: 26 },
+  { text: "May Allah always protect your heart, your smile, and the people you love.♥️", block: 26 },
+  { text: "Ameen. ✨🖤", block: 26 },
 
   { text: "Thank you...", block: 27 },
   { text: "Thank you for being you, for all the conversations and memories.", block: 27 },
@@ -145,7 +145,7 @@ export const lines = [
   { text: "Aur bas Saba... Itna hi.", block: 28 },
   { text: "Shayad agar main likhta rahun, to ye letter kabhi khatam hi na ho...", block: 28 },
   { text: "Thank you so much for reading all of this. 🌸", block: 28 },
-  { text: "Once again, a very Happy Birthday to you, Saba. 🌸❤️", block: 29 },
+  { text: "Once again, a very Happy Birthday to you, Saba.🎂💗", block: 29 },
   { text: "— Sahil...", block: 28, italic: true }
 ];
 
@@ -419,7 +419,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
                     onNext();
                   }}
                 >
-                  Lamhe... 🤍
+                  Lamhe... ♥️
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </motion.div>

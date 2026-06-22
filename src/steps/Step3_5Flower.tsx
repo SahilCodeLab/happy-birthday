@@ -169,8 +169,7 @@ export default function Step3_5Flower({ onNext, onPrev }: Step3_5Props) {
                 </h3>
                 <p className="font-body text-xs sm:text-sm text-muted-foreground mt-2 italic leading-relaxed">
                   Ab jo aage hai... <br />
-                  wo sirf aapke liye hai. 🤍
-                </p>
+                  wo sirf aapke liye hai. 💐                </p>
               </div>
 
               {/* Next Step Button */}

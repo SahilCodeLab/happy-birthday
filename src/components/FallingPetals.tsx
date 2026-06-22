@@ -33,7 +33,7 @@ const FallingPetals = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-50">
       {petalsData.map((petal, i) => (
         <motion.div
           key={i}

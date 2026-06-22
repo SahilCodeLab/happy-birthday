@@ -86,19 +86,16 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className="w-[90vw] max-w-[420px] bg-white/30 backdrop-blur-xl bg-gradient-to-b from-white/10 via-white/30 to-white/10 border border-primary/20 shadow-2xl rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden text-center z-10"
+            className="w-[92vw] max-w-[400px] bg-white/30 backdrop-blur-xl bg-gradient-to-b from-white/10 via-white/30 to-white/10 border border-primary/20 shadow-2xl rounded-2xl p-3 sm:p-5 flex flex-col relative overflow-hidden text-center z-10"
           >
             {/* Elegant Golden Sparkles drifting over the page */}
             <GoldenSparkles />
 
             {/* Subtle binder rings style top margin line */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20" />
-            <div className="absolute left-[35px] top-0 bottom-0 w-[1px] bg-red-400/15 pointer-events-none z-20" />
 
-
-            {/* Content Container */}
-            <div className="relative z-10 py-6 px-2 sm:px-4 flex flex-col items-center justify-center">
-
+            {/* Content Container (Non-scrollable, tight layout) */}
+            <div className="select-none z-10 relative flex flex-col items-center py-1">
               {/* Centered Glowing Lotus Flower */}
               <motion.div
                 animate={{
@@ -110,29 +107,39 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
                   ]
                 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="mb-6 flex justify-center text-primary"
+                className="mb-2 sm:mb-4 flex justify-center text-primary shrink-0"
               >
-                <LotusFlower className="h-14 w-14" />
+                <LotusFlower className="h-8 w-8 sm:h-12 sm:w-12" />
               </motion.div>
 
               {/* Short Heartfelt Closing Message */}
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 1 }}
-                className="font-handwriting text-xl sm:text-2xl text-[#7a6656] leading-relaxed max-w-[300px] mx-auto italic font-semibold"
+                className="space-y-2 sm:space-y-3 my-1 shrink-0"
               >
-                "Kuch safar bina kisi manzil ke bhi behad khoobsurat hote hain...
-                <br /><br />
-                Shukriya Saba, is saal ko mere liye sukoon aur muskurahat se bharne ke liye. Duaa hai ki tumhara aane wala har panna utna hi gentle ho, jitni tum ho."
-              </motion.p>
+                {[
+                  "Kuch safar bina kisi manzil ke bhi behad khoobsurat hote hain... Shukriya, Saba. 🤍",
+                  "Is saal ko mere liye sukoon, muskurahat aur khoobsurat yaadon se bharne ke liye.",
+                  "Duaa hai ki aap ka aane wala har panna utna hi gentle aur khoobsurat ho, jitni tum ho. 🌸",
+                  "May Allah keep you happy, safe & smiling. Wishing you the Happiest Birthday once again. 🌸❤️"
+                ].map((p, idx) => (
+                  <p
+                    key={idx}
+                    className="font-handwriting text-[16px] sm:text-[18px] md:text-[20px] text-[#7a6656] leading-relaxed max-w-[280px] sm:max-w-[320px] mx-auto italic font-normal"
+                  >
+                    {p}
+                  </p>
+                ))}
+              </motion.div>
 
               {/* Small Gold Divider */}
               <motion.div
                 initial={{ scaleX: 0, opacity: 0 }}
                 animate={{ scaleX: 1, opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
-                className="flex items-center justify-center my-6 gap-2 w-28 mx-auto"
+                className="flex items-center justify-center my-2 sm:my-4 gap-2 w-24 mx-auto shrink-0"
               >
                 <div className="h-[1px] bg-primary/30 flex-1" />
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/50 rotate-45" />
@@ -144,87 +151,90 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.8, duration: 1.2 }}
-                className="font-display text-xs sm:text-sm tracking-[0.2em] text-primary/60 uppercase"
+                className="font-display text-[9px] sm:text-[11px] tracking-[0.2em] text-primary/50 uppercase shrink-0 mt-1"
               >
                 ✦ Thank You For Reading ✦
               </motion.h3>
             </div>
 
-            {/* Download Gift Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.0 }}
-              className="mt-2 mb-3 relative z-20 shrink-0 w-full"
-            >
-              <div className="flex flex-col items-center gap-1.5 w-full">
-                <span className="text-[10px] uppercase font-display tracking-widest text-[#7a6656]/60">
-                  🎁 Save as Digital Gift
-                </span>
+            {/* Fixed Bottom Controls Area */}
+            <div className="mt-2.5 pt-2 border-t border-primary/10 relative z-20 shrink-0 w-full flex flex-col gap-2">
+              {/* Download Gift Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 2.0 }}
+                className="w-full"
+              >
+                <div className="flex flex-col items-center gap-1 w-full">
+                  <span className="text-[9px] uppercase font-display tracking-widest text-[#7a6656]/60">
+                    🎁 Save as Digital Gift
+                  </span>
+                  <div className="flex items-center justify-center w-full gap-2">
+                    <Button
+                      onClick={downloadLetter}
+                      disabled={isExportingLetter}
+                      className="btn-paper flex-1 py-1.5 text-[11px] sm:text-xs text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md flex items-center justify-center gap-1"
+                      style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                    >
+                      <span>{isExportingLetter ? "Preparing..." : "Download Letter 📝"}</span>
+                    </Button>
+                    <Button
+                      onClick={downloadAlbum}
+                      disabled={isExportingAlbum}
+                      className="btn-paper flex-1 py-1.5 text-[11px] sm:text-xs text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md flex items-center justify-center gap-1"
+                      style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                    >
+                      <span>{isExportingAlbum ? "Preparing..." : "Download Album 📸"}</span>
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Blow out candle button for peaceful fade-out */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 2.2 }}
+                className="w-full"
+              >
                 <div className="flex items-center justify-center w-full gap-2">
-                  <Button
-                    onClick={downloadLetter}
-                    disabled={isExportingLetter}
-                    className="btn-paper flex-1 py-1.5 text-xs text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md flex items-center justify-center gap-1"
+                  <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    onClick={() => { if (onPrev) onPrev(); else setIsDimmed(false); }}
+                    className="btn-paper px-3 sm:px-4 py-1.5 sm:py-2 flex items-center justify-center text-xs sm:text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
                     style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
                   >
-                    <span>{isExportingLetter ? "Preparing..." : "Download Letter 📝"}</span>
-                  </Button>
+                    ← Back
+                  </motion.button>
                   <Button
-                    onClick={downloadAlbum}
-                    disabled={isExportingAlbum}
-                    className="btn-paper flex-1 py-1.5 text-xs text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md flex items-center justify-center gap-1"
+                    onClick={() => setIsDimmed(true)}
+                    className="btn-paper flex-1 py-1.5 sm:py-2 flex items-center justify-center text-xs sm:text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
                     style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
                   >
-                    <span>{isExportingAlbum ? "Preparing..." : "Download Album 📸"}</span>
+                    Blow out the candle 🕯️
                   </Button>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
 
-            {/* Blow out candle button for peaceful fade-out */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.2 }}
-              className="mt-0 mb-4 relative z-20 shrink-0"
-            >
-              <div className="flex items-center justify-center w-full gap-2">
-                <motion.button
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-                  onClick={() => { if (onPrev) onPrev(); else setIsDimmed(false); }}
-                  className="btn-paper px-4 py-2 flex items-center justify-center text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
-                  style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
-                >
-                  ← Back
-                </motion.button>
-                <Button
-                  onClick={() => setIsDimmed(true)}
-                  className="btn-paper px-4 py-2 flex items-center justify-center text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
-                  style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
-                >
-                  Blow out the candle 🕯️
-                </Button>
-              </div>
-            </motion.div>
+              {/* Small Elegant Footer (Signature & Date) */}
+              <div className="pt-1.5 flex flex-col items-center justify-center relative z-10 w-full">
+                <div className="w-full flex items-center justify-between px-1 text-[#7a6656]">
+                  <div className="text-left">
+                    <span className="font-body text-[8px] sm:text-[9px] text-muted-foreground/60 italic block">
+                      Just for you....
+                    </span>
+                    <span className="font-display text-[10px] text-muted-foreground/50 tracking-wider">
+                      10 Jan 2025 — 23 June 2026
+                    </span>
+                  </div>
 
-            {/* Small Elegant Footer (Signature & Date) */}
-            <div className="border-t border-primary/10 pt-3 flex flex-col items-center justify-center relative z-10 shrink-0">
-              <div className="w-full flex items-center justify-between px-2 text-[#7a6656]">
-                <div className="text-left">
-                  <span className="font-body text-[9px] text-muted-foreground/60 italic block">
-                    Just for you....
-                  </span>
-                  <span className="font-display text-xs text-muted-foreground/50 tracking-wider">
-                    10 Jan 2025 — 23 June 2026
+                  <span className="font-signature text-2xl sm:text-3xl text-primary font-medium leading-none">
+                    — Sahil
                   </span>
                 </div>
-
-                <span className="font-signature text-2xl sm:text-3xl text-primary font-medium leading-none">
-                  — Sahil
-                </span>
               </div>
             </div>
           </motion.div>
@@ -254,9 +264,9 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
               transition={{ duration: 4.5, times: [0, 0.3, 0.8, 1], ease: "easeInOut" }}
               className="font-handwriting text-2xl sm:text-3xl text-primary/75 italic leading-relaxed"
             >
-              "Always in my prayers.
+              Always in my prayers.
               <br />
-              Khush raho hamesha, Saba. 🌸"
+               May Allah Keep You Happy, Always. 🪷
             </motion.p>
 
             {/* Reset option for navigation back */}
@@ -267,7 +277,7 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
               onClick={() => setIsDimmed(false)}
               className="mt-16 text-[10px] font-display uppercase tracking-widest text-primary/60 hover:opacity-100 hover:text-primary transition-all duration-300 underline underline-offset-4"
             >
-              ✦ open journal again ✦
+              ✦ open again ✦
             </motion.button>
           </motion.div>
         )}
@@ -388,7 +398,7 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
           fontStyle: "italic",
           marginBottom: "50px"
         }}>
-          Saba, a year of gentle memories, captured forever... 🤍
+          Saba, ye meri sabse favourite pictures hain aapki... 🪷
         </p>
 
         {/* Polaroid Grid Layout */}
@@ -406,7 +416,7 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
                 backgroundColor: "#FCFAF2",
                 border: "1px solid rgba(212, 163, 89, 0.2)",
                 borderRadius: "12px",
-                padding: "20px 20px 24px 20px",
+                padding: "16px 16px 36px 16px",
                 boxShadow: "0 10px 25px rgba(0, 0, 0, 0.08)",
                 display: "flex",
                 flexDirection: "column",
@@ -414,19 +424,6 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
                 position: "relative"
               }}
             >
-              {/* Vintage tape top accent */}
-              <div style={{
-                position: "absolute",
-                top: "-6px",
-                left: "50%",
-                transform: "translateX(-50%) rotate(1deg)",
-                width: "70px",
-                height: "18px",
-                backgroundColor: "rgba(212, 163, 89, 0.12)",
-                borderRadius: "2px",
-                borderBottom: "1px solid rgba(212, 163, 89, 0.05)"
-              }} />
-
               {/* Date stamp */}
               <div style={{
                 position: "absolute",
@@ -447,8 +444,7 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
                 borderRadius: "8px",
                 border: "1px solid rgba(212, 163, 89, 0.1)",
                 backgroundColor: "#EFECE6",
-                marginTop: "16px",
-                marginBottom: "16px"
+                marginTop: "14px"
               }}>
                 <img
                   src={img.src}
@@ -460,20 +456,6 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
                   }}
                 />
               </div>
-
-              {/* Caption */}
-              <p style={{
-                fontFamily: "var(--font-handwriting)",
-                fontSize: "16px",
-                lineHeight: "22px",
-                margin: 0,
-                textAlign: "center",
-                fontStyle: "italic",
-                fontWeight: 500,
-                color: "#7a6656"
-              }}>
-                {img.caption}
-              </p>
             </div>
           ))}
         </div>

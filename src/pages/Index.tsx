@@ -135,12 +135,54 @@ const PasswordProtection = ({ onUnlock }: { onUnlock: () => void }) => {
   const [error, setError] = useState("");
   const [isShaking, setIsShaking] = useState(false);
 
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    
+    // If the user is deleting, just let them delete
+    if (val.length < password.length) {
+      setPassword(val);
+      if (error) setError("");
+      return;
+    }
+    
+    // Only keep digits
+    const digits = val.replace(/\D/g, "").slice(0, 8);
+    
+    let formatted = "";
+    if (digits.length > 0) {
+      formatted += digits.slice(0, 2);
+      if (digits.length >= 2) {
+        formatted += "/";
+      }
+    }
+    if (digits.length > 2) {
+      formatted += digits.slice(2, 4);
+      if (digits.length >= 4) {
+        formatted += "/";
+      }
+    }
+    if (digits.length > 4) {
+      formatted += digits.slice(4, 8);
+    }
+    
+    setPassword(formatted);
+    if (error) setError("");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "saba23/06/2026") {
+    const cleanPassword = password.trim().toLowerCase();
+    const isCorrect =
+      cleanPassword === "23/06/2006" ||
+      cleanPassword === "23-06-2006" ||
+      cleanPassword === "23062006" ||
+      cleanPassword === "23 june 2006" ||
+      cleanPassword === "23june2006";
+
+    if (isCorrect) {
       onUnlock();
     } else {
-      setError("Incorrect password. Hint: sabaDD/MM/YYYY 🌸");
+      setError("Incorrect password. Hint: Use date format DD/MM/YYYY (e.g., 01/01/1887) 🌸");
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 500);
     }
@@ -181,16 +223,16 @@ const PasswordProtection = ({ onUnlock }: { onUnlock: () => void }) => {
           <form onSubmit={handleSubmit} className="w-full space-y-4">
             <div className="space-y-2">
               <input
-                type="password"
-                placeholder="Type the password..."
+                type="text"
+                placeholder="Enter Date (DD/MM/YYYY)"
                 value={password}
                 autoFocus
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  if (error) setError("");
-                }}
-                className="w-full text-center px-3 sm:px-4 py-2.5 sm:py-3 bg-[#FCFAF2] border border-primary/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-foreground font-body placeholder:text-muted-foreground/30 transition-all shadow-inner text-base sm:text-lg"
+                onChange={handlePasswordChange}
+                className="w-full text-center px-3 sm:px-4 py-2.5 sm:py-3 bg-[#FCFAF2] border border-primary/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-[#7a6656] font-body placeholder:text-muted-foreground/30 transition-all shadow-inner text-base sm:text-lg"
               />
+              <p className="text-[11px] text-muted-foreground/70 text-center font-body mt-1">
+                Hint: Enter your date of birth  (DD/MM/YYYY)🌸
+              </p>
               <AnimatePresence>
                 {error && (
                   <motion.p
