@@ -16,7 +16,7 @@ interface Step3Props {
   onPrev?: () => void;
 }
 
-const lines = [
+export const lines = [
   { text: "Happy Birthday, Saba. 🌸", block: 0 },
   { text: "Pata hai...", block: 0 },
   { text: "Ye aapke liye meri second birthday wish hai.", block: 0 },
@@ -99,25 +99,54 @@ const lines = [
   { text: "gussa bhi karti hain aur phir care bhi karti hain.", block: 15 },
   { text: "Aur sach kahun, mujhe aapki ye baat bhi achhi lagti hai...", block: 15 },
 
-  { text: "Saba...", block: 16 },
-  { text: "Aapka past jaisa bhi raha ho...", block: 16 },
-  { text: "Meri dil se dua hai ki Allah aapka future usse kahin zyada khoobsurat likhe.", block: 16 },
-  { text: "Aapki har genuine dua qubool ho, aur aap hamesha muskurati rahiye...", block: 16 },
+  { text: "Saba...", block: 18 },
+  { text: "Aapka past jaisa bhi raha ho...", block: 18 },
+  { text: "Meri dil se dua hai ki Allah aapka future usse kahin zyada khoobsurat likhe.", block: 18 },
+  { text: "Aapki har genuine dua qubool ho, aur aap hamesha muskurati rahiye...", block: 18 },
 
-  { text: "Thank you...", block: 17 },
-  { text: "Thank you for being you, for all the conversations and memories.", block: 17 },
-  { text: "Thank you for every smile, every laugh, and every time you cared.", block: 17 },
-  { text: "And thank you for becoming such a beautiful part of my life... ", block: 17 },
+  { text: "May Allah bless you with good health, happiness, peace, and endless barakah. 🤍", block: 19 },
+  { text: "May He make your present beautiful and your future bright. ✨", block: 19 },
+  { text: "May your heart always find comfort in what is best for you. 🌸", block: 19 },
 
-  { text: "May Allah bless you with happiness, peace, barakah and success.", block: 18 },
-  { text: "May Allah protect your heart from sadness and fill your life with reasons to smile...", block: 18 },
-  { text: "Ameen. 🤍", block: 18 },
+  { text: "May Allah grant you success in your studies, your dreams,", block: 20 },
+  { text: "and every path you choose to walk.", block: 20 },
+  { text: "May every difficulty be followed by ease,", block: 20 },
+  { text: "every worry by peace, and every tear by a reason to smile. 🤍", block: 20 },
 
-  { text: "Aur bas Saba... Itna hi.", block: 19 },
-  { text: "Shayad agar main likhta rahun, to ye letter kabhi khatam hi na ho...", block: 19 },
-  { text: "Thank you so much for reading all of this. 🌸", block: 19 },
-  { text: "Happy Birthday once again, Saba. 🤍", block: 19 },
-  { text: "— Sahil...", block: 19, italic: true }
+  { text: "Whenever you feel lost, may Allah guide you.", block: 21 },
+  { text: "Whenever you feel tired, may He give you strength.", block: 21 },
+  { text: "And whenever life feels heavy,", block: 21 },
+  { text: "may He fill your heart with peace. 🌷", block: 21 },
+
+  { text: "May every sincere prayer you make be accepted.", block: 22 },
+  { text: "May every beautiful dream you have come closer to reality. ✨", block: 22 },
+  { text: "And may every step you take lead you towards something better.", block: 22 },
+
+  { text: "And one more thing, Saba... 🤍", block: 23 },
+  { text: "May Allah never let your heart feel the pain of losing something truly precious. 🤍", block: 23 },
+
+  { text: "But if there ever comes a day when life feels difficult...", block: 24 },
+  { text: "Or your heart feels a little too heavy...", block: 24 },
+  { text: "Please don't think that you are alone. 🌸", block: 24 },
+
+  { text: "I may not be able to solve every problem for you.", block: 25 },
+  { text: "But I will always try to listen.", block: 25 },
+  { text: "I will always try to understand.", block: 25 },
+  { text: "And I will always try to be there whenever you need someone to listen.. ✨", block: 25 },
+
+  { text: "May Allah always protect your heart, your smile, and the people you love. 🤍", block: 26 },
+  { text: "Ameen. 🌸", block: 26 },
+
+  { text: "Thank you...", block: 27 },
+  { text: "Thank you for being you, for all the conversations and memories.", block: 27 },
+  { text: "Thank you for every smile, every laugh, and every time you cared.", block: 27 },
+  { text: "And thank you for becoming such a beautiful part of my life...", block: 27 },
+
+  { text: "Aur bas Saba... Itna hi.", block: 28 },
+  { text: "Shayad agar main likhta rahun, to ye letter kabhi khatam hi na ho...", block: 28 },
+  { text: "Thank you so much for reading all of this. 🌸", block: 28 },
+  { text: "Once again, a very Happy Birthday to you, Saba. 🌸❤️", block: 29 },
+  { text: "— Sahil...", block: 28, italic: true }
 ];
 
 
@@ -140,10 +169,10 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
 
   // Auto-scroll to bottom of the writing area during typewriter typing
   useEffect(() => {
-    if (scrollContainerRef.current) {
+    if (!isTypingComplete && scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
     }
-  }, [activeLineIdx, currentLineText]);
+  }, [activeLineIdx, currentLineText, isTypingComplete]);
 
   useEffect(() => {
     if (isTypingComplete) return;
@@ -210,6 +239,18 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
 
     const container = scrollContainerRef.current;
     if (!container) return;
+
+    // Boundary check: if at the very top, always play block 0 music
+    if (container.scrollTop === 0) {
+      void handleBlockMusic(0);
+      return;
+    }
+
+    // Boundary check: if at the very bottom, always play block 28 music
+    if (container.scrollTop + container.clientHeight >= container.scrollHeight - 5) {
+      void handleBlockMusic(28);
+      return;
+    }
 
     const paragraphs = container.querySelectorAll("p[data-block]");
     if (paragraphs.length === 0) return;
@@ -344,11 +385,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
 
           {/* Footer */}
           <div className="shrink-0 flex flex-col items-center justify-center border-t border-primary/10 pt-3 z-10 min-h-[90px]">
-            {!isTypingComplete ? (
-              <div className="text-[9px] font-display text-primary/45 tracking-widest uppercase animate-pulse pb-2">
-                ✦ words forming ✦
-              </div>
-            ) : (
+            {!isTypingComplete ? null : (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -368,7 +405,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
                     }}
                   >
                     <ArrowLeft className="w-4 h-4" />
-                   Wapas... 🌷
+                    Wapas... 🌷
                   </Button>
                 )}
                 {/* Next Button */}
@@ -382,7 +419,7 @@ export default function Step3Letter({ onNext, onPrev }: Step3Props) {
                     onNext();
                   }}
                 >
-                 Lamhe... 🤍
+                  Lamhe... 🤍
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </motion.div>

@@ -158,7 +158,7 @@ export default function Step1Message({ onNext }: Step1Props) {
                   10 January 2025
                 </h2>
                 <p className="font-body text-sm sm:text-base text-muted-foreground/90 italic">
-                  Shayad tumhe yaad bhi na ho...<br/>Par mujhe aaj bhi yaad hai.
+                  Shayad aap ko yaad bhi na ho...<br/>Par mujhe aaj bhi yaad hai.
                 </p>
               </div>
 
@@ -406,7 +406,7 @@ export default function Step1Message({ onNext }: Step1Props) {
                   10 January 2025
                 </h1>
                 <p className="font-body text-sm sm:text-base text-muted-foreground/90 italic">
-                  Shayad tumhe yaad bhi na ho...<br/>Par mujhe aaj bhi yaad hai.
+                  Shayad aap ko yaad bhi na ho...<br/>Par mujhe aaj bhi yaad hai.
                 </p>
               </div>
 
@@ -489,12 +489,7 @@ export default function Step1Message({ onNext }: Step1Props) {
 
               {/* Bottom Golden Divider, Quote, and Rounded Button */}
               <div className="shrink-0 flex flex-col items-center justify-center border-t border-primary/10 pt-3 min-h-[80px]">
-                {!isTypingComplete ? (
-                  /* Soft indicator during typing (no buttons) */
-                  <div className="text-[9px] font-display text-primary/45 tracking-widest uppercase animate-pulse pb-2">
-                    ✦ discovery in progress ✦
-                  </div>
-                ) : (
+                {!isTypingComplete ? null : (
                   /* Revealed Content once complete */
                   <motion.div
                     initial={{ opacity: 0, y: 8 }}

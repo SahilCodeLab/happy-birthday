@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { handleBlockMusic, stopAllMusic } from "../musicController";
+import { useState, useEffect, useRef } from "react";
+import { stopAllMusic } from "../musicController";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
 import CandleFlame from "../components/CandleFlame";
 import FallingPetals from "../components/FallingPetals";
 import LotusFlower from "../components/LotusFlower";
@@ -16,6 +16,7 @@ import flowerBtn from "../saba/flower1 (3).png";
 import buttonTexture from "../saba/button texture.jpg";
 interface Step2Props {
   onNext: () => void;
+  onPrev?: () => void;
 }
 
 const lines = [
@@ -39,12 +40,20 @@ const lines = [
 
 ]
 
-export default function Step2Moments({ onNext }: Step2Props) {
+export default function Step2Moments({ onNext, onPrev }: Step2Props) {
   const [visibleLines, setVisibleLines] = useState<string[][]>([[], [], []]); // Store lines by block
   const [currentLineText, setCurrentLineText] = useState("");
   const [activeLineIdx, setActiveLineIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom during typing
+  useEffect(() => {
+    if (!isTypingComplete && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+    }
+  }, [visibleLines, currentLineText, isTypingComplete]);
 
   // Stop music on mount
   useEffect(() => {
@@ -85,10 +94,6 @@ export default function Step2Moments({ onNext }: Step2Props) {
         setCurrentLineText("");
         setCharIdx(0);
         setActiveLineIdx((prev) => prev + 1);
-        // If entering a new block, start its associated music
-        if (isNewBlock && nextLine) {
-          void handleBlockMusic(nextLine.block);
-        }
       }, pauseDuration);
 
       return () => clearTimeout(pauseTimer);
@@ -165,6 +170,7 @@ Ek yaadgaar safar ki shuruaat."
 
           {/* Ruled Notebook Writing Area */}
           <div
+            ref={scrollContainerRef}
             className="flex-1 flex flex-col justify-start pl-[38px] sm:pl-[52px] pr-2 z-10 overflow-y-auto py-3 text-left fade-up"
             style={{
               backgroundImage: 'repeating-linear-gradient(transparent, transparent 29px, hsl(var(--primary) / 0.12) 29px, hsl(var(--primary) / 0.12) 30px)',
@@ -241,19 +247,32 @@ Ek yaadgaar safar ki shuruaat."
             {/* Gold divider */}
             <div className="w-16 border-t border-primary/30 my-0.5" />
 
-            {/* Navigation Rounded Button */}
-            <div className="pt-0.5 flex justify-center">
+            {/* Navigation Rounded Buttons */}
+            <div className="pt-0.5 flex justify-center items-center w-full gap-3 px-2">
+              {onPrev && (
+                <Button
+                  className="btn-paper flex-1 max-w-[140px] flex items-center justify-center gap-1.5 py-1.5 text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat text-sm whitespace-nowrap"
+                  style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Stop parent click
+                    onPrev();
+                  }}
+                >
+                  <ArrowLeft size={15} />
+                  <span>Piche 🌸</span>
+                </Button>
+              )}
               <Button
-                className="btn-paper flex items-center gap-2 bg-cover bg-center bg-no-repeat"
+                className="btn-paper flex-1 max-w-[160px] flex items-center justify-center gap-1.5 py-1.5 text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat text-sm whitespace-nowrap"
                 style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
                 onClick={(e) => {
                   e.stopPropagation(); // Stop parent click
-                  void handleBlockMusic(0); // start intro music on click
                   onNext();
                 }}
               >
-                <img src={flowerBtn} alt="flower button" className="w-6 h-6 mr-2" />
-                <span className="text-[#7a6656] font-bold">Aur Phir... 🌷  </span><ArrowRight size={16} />
+                <img src={flowerBtn} alt="flower button" className="w-4 h-4" />
+                <span>Aur Phir... 🌷</span>
+                <ArrowRight size={15} />
               </Button>
             </div>
           </motion.div>

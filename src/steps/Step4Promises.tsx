@@ -14,29 +14,41 @@ import flower1_3 from "../saba/flower1 (3).png";
 import yellowFlower from "../saba/yellow flower.png";
 import whiteFlower from "../saba/white flower.png";
 // Import beautiful memory images
-import img1 from "../saba/IMG-20250608-WA0000.jpg";
-import img2 from "../saba/IMG-20250608-WA0001.jpg";
-import img3 from "../saba/IMG-20250625-WA0000.jpg";
-import img4 from "../saba/IMG-20250625-WA0001.jpg";
-import img5 from "../saba/IMG-20250625-WA0002.jpg";
-import img6 from "../saba/IMG-20251212-WA0000.jpg";
-import img7 from "../saba/IMG-20251212-WA0001.jpg";
-import img8 from "../saba/IMG-20251212-WA0002.jpg";
+import img1 from "../saba/first photo.jpg";
+import img2 from "../saba/2nd.jpg";
+import img3 from "../saba/3.jpg";
+import img4 from "../saba/4.jpg";
+import img5 from "../saba/5.jpg";
+import img6 from "../saba/6.jpg";
+import img7 from "../saba/7.jpg";
+import img8 from "../saba/8.jpg";
+import img10 from "../saba/10.jpg";
+import img11 from "../saba/11.jpg";
+import img13 from "../saba/13.jpg";
+import img14 from "../saba/14.jpg";
+import img15 from "../saba/15.jpg";
+import img16 from "../saba/16.jpg";
 
 interface Step4Props {
   onNext: () => void;
   onPrev?: () => void;
 }
 
-const albumImages = [
-  { src: img1, caption: "Saba... tumhaari smile sabse pyaari hai ✨", date: "8 June 2025" },
-  { src: img2, caption: "Har ek lamha jo tumhare sath beeta... 💖", date: "8 June 2025" },
-  { src: img3, caption: "Sukoon bhari baatein, aur dher saari yaadein 🌟", date: "25 June 2025" },
-  { src: img4, caption: "Tumhari hansi jaise koi khoobsurat geet ho 🌸", date: "25 June 2025" },
-  { src: img5, caption: "Saba, you bring warmth and light to everything 💕", date: "25 June 2025" },
-  { src: img6, caption: "Ye pyaare pal hamesha dil ke paas rahenge 💫", date: "12 Dec 2025" },
-  { src: img7, caption: "Tumhare chehre ki khushi hi sab kuch hai 🌹", date: "12 Dec 2025" },
-  { src: img8, caption: "Always keeping these memories safe in my heart 🥰", date: "12 Dec 2025" },
+export const albumImages = [
+  { src: img1, caption: "This has always been one of my favorite pictures of you. 🌸❤️✨", date: "22 march 2026" },
+  { src: img2, caption: "Har ek lamha jo tumhare sath beeta... 💖", date: "24 March 2026" },
+  { src: img3, caption: "Sukoon bhari baatein, aur dher saari yaadein 🌟", date: "24 March 2026" },
+  { src: img4, caption: "Tumhari hansi jaise koi khoobsurat geet ho 🌸", date: "24 March 2026" },
+  { src: img5, caption: "Saba, you bring warmth and light to everything 💕", date: "24 March 2026" },
+  { src: img6, caption: "Ye pyaare pal hamesha dil ke paas rahenge 💫", date: "12 December 2025" },
+  { src: img7, caption: "Tumhare chehre ki khushi hi sab kuch hai 🌹", date: "12 December 2025" },
+  { src: img8, caption: "Always keeping these memories safe in my heart 🥰", date: "12 December 2025" },
+  { src: img10, caption: "Har din tumhare hone se aur bhi rangeen ho jata hai 🎨", date: "12 December 2025" },
+  { src: img11, caption: "Tumhari sadgi me hi tumhari sabse badi khoobsurati hai 🤍", date: "15 February 2026" },
+  { src: img13, caption: "Dua hai ki tum hamesha aisi hi muskurati raho 🌸", date: "23 March 2026" },
+  { src: img14, caption: "Ek pyaari si subah, aur tumhari dher saari baatein ☀️", date: "23 March 2026" },
+  { src: img15, caption: "Tumhare saath har pal ek nayi umeed lekar aata hai ✨", date: "23 March 2026" },
+  { src: img16, caption: "Shukriya Saba, meri life ka sabse gentle part banne ke liye 💝", date: "23 March 2026" },
 ];
 
 export default function Step4Promises({ onNext, onPrev }: Step4Props) {
@@ -234,8 +246,8 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                 style={{ perspective: "1000px" }}
               >
                 <div className={`relative w-full max-w-[95vw] sm:max-w-[420px] flex items-center justify-center ${isMobile
-                    ? (isShortScreen ? "h-[250px]" : "h-[290px]")
-                    : "h-[410px]"
+                  ? (isShortScreen ? "h-[250px]" : "h-[290px]")
+                  : "h-[410px]"
                   }`}>
                   {albumImages.map((image, index) => {
                     const diff = index - activeIndex;
@@ -307,8 +319,8 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
                           }
                         }}
                         className={`bg-[#FCFAF2] border-2 border-primary/20 rounded-xl p-3 sm:p-4 flex flex-col justify-between items-center cursor-grab active:cursor-grabbing relative overflow-hidden shadow-[0_12px_28px_rgba(0,0,0,0.15)] ${isMobile
-                            ? (isShortScreen ? "w-[180px] h-[240px]" : "w-[210px] h-[280px]")
-                            : "w-[300px] h-[400px]"
+                          ? (isShortScreen ? "w-[180px] h-[240px]" : "w-[210px] h-[280px]")
+                          : "w-[300px] h-[400px]"
                           } ${isActive ? "border-primary/30" : "border-primary/10 opacity-70"
                           } ${!isActive && isMobile ? "blur-[1.2px]" : "blur-none"
                           }`}
@@ -408,7 +420,7 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
       </div>
 
       {/* Step Navigation Footer */}
-      <div className="absolute top-[610px] left-0 right-0 w-full max-w-[420px] shrink-0 flex flex-col items-center space-y-2 z-10 pb-1 sm:pb-2 border-t border-primary/10 -mt-3 pt-1 sm:pt-2">
+      <div className="absolute top-[610px] sm:top-auto sm:bottom-6 left-0 right-0 w-full max-w-[420px] mx-auto shrink-0 flex flex-col items-center space-y-2 z-10 pb-1 sm:pb-2 border-t border-primary/10 -mt-3 pt-1 sm:pt-2">
         <div className="flex w-full items-center justify-between px-2 gap-4" style={{ marginTop: '-11px' }}>
           {onPrev && (
             <Button

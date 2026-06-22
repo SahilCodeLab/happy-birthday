@@ -18,14 +18,20 @@ import flowerBtn from "../saba/flower1 (3).png";
 import flower4 from "../saba/flower4.png";
 import buttonTexture from "../saba/button texture.jpg";
 
-import img1 from "../saba/IMG-20250608-WA0000.jpg";
-import img2 from "../saba/IMG-20250608-WA0001.jpg";
-import img3 from "../saba/IMG-20250625-WA0000.jpg";
-import img4 from "../saba/IMG-20250625-WA0001.jpg";
-import img5 from "../saba/IMG-20250625-WA0002.jpg";
-import img6 from "../saba/IMG-20251212-WA0000.jpg";
-import img7 from "../saba/IMG-20251212-WA0001.jpg";
-import img8 from "../saba/IMG-20251212-WA0002.jpg";
+import img1 from "../saba/first photo.jpg";
+import img2 from "../saba/2nd.jpg";
+import img3 from "../saba/3.jpg";
+import img4 from "../saba/4.jpg";
+import img5 from "../saba/5.jpg";
+import img6 from "../saba/6.jpg";
+import img7 from "../saba/7.jpg";
+import img8 from "../saba/8.jpg";
+import img10 from "../saba/10.jpg";
+import img11 from "../saba/11.jpg";
+import img13 from "../saba/13.jpg";
+import img14 from "../saba/14.jpg";
+import img15 from "../saba/15.jpg";
+import img16 from "../saba/16.jpg";
 
 import { Button } from "../components/ui/button";
 import { Lock } from "lucide-react";
@@ -244,6 +250,12 @@ const Index = () => {
       img6,
       img7,
       img8,
+      img10,
+      img11,
+      img13,
+      img14,
+      img15,
+      img16,
       "https://media.tenor.com/b6RK49IXUTMAAAAC/bubu-dubu-sseeyall.gif",
       "https://media.tenor.com/0cNM_9li440AAAAC/dudu-giving-flowers-bubu-flowers.gif"
     ];

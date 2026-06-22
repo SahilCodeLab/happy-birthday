@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../components/ui/button";
 import LotusFlower from "../components/LotusFlower";
@@ -7,25 +7,77 @@ import CandleFlame from "../components/CandleFlame";
 import GoldenSparkles from "../components/GoldenSparkles";
 import buttonTexture from "../saba/button texture.jpg";
 import SoftConfetti from "../components/SoftConfetti";
+import { lines as letterLines } from "./Step3Letter";
+import { albumImages } from "./Step4Promises";
+
 const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
   const [isDimmed, setIsDimmed] = useState(false);
+  const letterRef = useRef<HTMLDivElement>(null);
+  const albumRef = useRef<HTMLDivElement>(null);
+  const [isExportingLetter, setIsExportingLetter] = useState(false);
+  const [isExportingAlbum, setIsExportingAlbum] = useState(false);
+
+  const downloadLetter = async () => {
+    if (!letterRef.current) return;
+    setIsExportingLetter(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(letterRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#FCFAF2",
+        logging: false,
+      });
+      const dataUrl = canvas.toDataURL("image/png", 1.0);
+      const link = document.createElement("a");
+      link.download = "Saba_Heartfelt_Letter.png";
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Export letter failed:", err);
+    } finally {
+      setIsExportingLetter(false);
+    }
+  };
+
+  const downloadAlbum = async () => {
+    if (!albumRef.current) return;
+    setIsExportingAlbum(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(albumRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#F7F3EE",
+        logging: false,
+      });
+      const dataUrl = canvas.toDataURL("image/png", 1.0);
+      const link = document.createElement("a");
+      link.download = "Saba_Memory_Collage.png";
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Export album failed:", err);
+    } finally {
+      setIsExportingAlbum(false);
+    }
+  };
 
   return (
     <div className="relative w-full h-[100dvh] min-h-[100dvh] max-h-[100dvh] flex flex-col items-center justify-center px-4 overflow-hidden z-10 select-none bg-gradient-to-b from-background via-cream-dark to-background transition-colors duration-1000">
-      
+
       {/* Gentle falling petals for peaceful closing ambiance */}
       {!isDimmed && <FallingPetals />}
 
       {/* Ambient background glow */}
       <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-0">
-        <CandleFlame 
-          className={`w-48 h-96 filter blur-3xl transition-opacity duration-[3000ms] ${
-            isDimmed ? "opacity-0" : "opacity-15"
-          }`} 
+        <CandleFlame
+          className={`w-48 h-96 filter blur-3xl transition-opacity duration-[3000ms] ${isDimmed ? "opacity-0" : "opacity-15"
+            }`}
         />
       </div>
 
-<SoftConfetti className="absolute inset-0 pointer-events-none" />
+      <SoftConfetti className="absolute inset-0 pointer-events-none" />
       <AnimatePresence mode="wait">
         {!isDimmed ? (
           <motion.div
@@ -46,7 +98,7 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
 
             {/* Content Container */}
             <div className="relative z-10 py-6 px-2 sm:px-4 flex flex-col items-center justify-center">
-              
+
               {/* Centered Glowing Lotus Flower */}
               <motion.div
                 animate={{
@@ -98,6 +150,38 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
               </motion.h3>
             </div>
 
+            {/* Download Gift Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2.0 }}
+              className="mt-2 mb-3 relative z-20 shrink-0 w-full"
+            >
+              <div className="flex flex-col items-center gap-1.5 w-full">
+                <span className="text-[10px] uppercase font-display tracking-widest text-[#7a6656]/60">
+                  🎁 Save as Digital Gift
+                </span>
+                <div className="flex items-center justify-center w-full gap-2">
+                  <Button
+                    onClick={downloadLetter}
+                    disabled={isExportingLetter}
+                    className="btn-paper flex-1 py-1.5 text-xs text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md flex items-center justify-center gap-1"
+                    style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                  >
+                    <span>{isExportingLetter ? "Preparing..." : "Download Letter 📝"}</span>
+                  </Button>
+                  <Button
+                    onClick={downloadAlbum}
+                    disabled={isExportingAlbum}
+                    className="btn-paper flex-1 py-1.5 text-xs text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md flex items-center justify-center gap-1"
+                    style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                  >
+                    <span>{isExportingAlbum ? "Preparing..." : "Download Album 📸"}</span>
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+
             {/* Blow out candle button for peaceful fade-out */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -106,24 +190,24 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
               className="mt-0 mb-4 relative z-20 shrink-0"
             >
               <div className="flex items-center justify-center w-full gap-2">
-                  <motion.button
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
-                    onClick={() => { if (onPrev) onPrev(); else setIsDimmed(false); }}
-                    className="btn-paper px-4 py-2 flex items-center justify-center text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
-                    style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
-                  >
-                    ← Back
-                  </motion.button>
-                  <Button
-                    onClick={() => setIsDimmed(true)}
-                    className="btn-paper px-4 py-2 flex items-center justify-center text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
-                    style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
-                  >
-                    Blow out the candle 🕯️
-                  </Button>
-                </div>
+                <motion.button
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  onClick={() => { if (onPrev) onPrev(); else setIsDimmed(false); }}
+                  className="btn-paper px-4 py-2 flex items-center justify-center text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
+                  style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                >
+                  ← Back
+                </motion.button>
+                <Button
+                  onClick={() => setIsDimmed(true)}
+                  className="btn-paper px-4 py-2 flex items-center justify-center text-sm text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat rounded-md"
+                  style={{ backgroundImage: `url(${buttonTexture})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' }}
+                >
+                  Blow out the candle 🕯️
+                </Button>
+              </div>
             </motion.div>
 
             {/* Small Elegant Footer (Signature & Date) */}
@@ -131,13 +215,13 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
               <div className="w-full flex items-center justify-between px-2 text-[#7a6656]">
                 <div className="text-left">
                   <span className="font-body text-[9px] text-muted-foreground/60 italic block">
-                    Made for Saba
+                    Just for you....
                   </span>
                   <span className="font-display text-xs text-muted-foreground/50 tracking-wider">
-                    10 Jan 2025 — 10 Jan 2026
+                    10 Jan 2025 — 23 June 2026
                   </span>
                 </div>
-                
+
                 <span className="font-signature text-2xl sm:text-3xl text-primary font-medium leading-none">
                   — Sahil
                 </span>
@@ -188,6 +272,212 @@ const OutroStep = ({ onPrev }: { onPrev?: () => void }) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Hidden Letter Container for Image Export */}
+      <div
+        ref={letterRef}
+        style={{
+          position: "fixed",
+          left: "-9999px",
+          top: "-9999px",
+          width: "600px",
+          backgroundColor: "#FCFAF2",
+          padding: "50px 40px 60px 40px",
+          fontFamily: "var(--font-handwriting)",
+          color: "#7a6656",
+          backgroundImage: 'repeating-linear-gradient(transparent, transparent 29px, rgba(212, 163, 89, 0.12) 29px, rgba(212, 163, 89, 0.15) 30px)',
+          backgroundAttachment: 'local',
+          border: "1px solid rgba(212, 163, 89, 0.2)",
+          borderRadius: "8px",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.05)"
+        }}
+      >
+        {/* Notebook Red Margin Line */}
+        <div style={{
+          position: "absolute",
+          left: "80px",
+          top: 0,
+          bottom: 0,
+          width: "2px",
+          backgroundColor: "rgba(239, 68, 68, 0.2)",
+        }} />
+
+        {/* Content wrapper shifted to the right of red margin line */}
+        <div style={{ paddingLeft: "60px", zIndex: 10, position: "relative" }}>
+          <h1 style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "28px",
+            color: "hsl(var(--primary))",
+            textAlign: "center",
+            marginBottom: "10px",
+            letterSpacing: "2px",
+            textTransform: "uppercase"
+          }}>
+            Baatein Jo Dil Mein Hain
+          </h1>
+          <p style={{
+            fontSize: "14px",
+            color: "#8c7b6e",
+            fontStyle: "italic",
+            textAlign: "center",
+            marginBottom: "40px"
+          }}>
+            "Jo shayad main kabhi keh nahi paaya..."
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            {(() => {
+              const elements = [];
+              let lastBlockIdx = -1;
+              for (let i = 0; i < letterLines.length; i++) {
+                const line = letterLines[i];
+                if (lastBlockIdx !== -1 && line.block !== lastBlockIdx) {
+                  elements.push(
+                    <div key={`spacer-${i}`} style={{ height: "30px" }} />
+                  );
+                }
+                elements.push(
+                  <p key={i} style={{
+                    fontSize: "22px",
+                    lineHeight: "30px",
+                    margin: 0,
+                    fontStyle: line.italic ? "italic" : "normal",
+                    fontWeight: 500,
+                  }}>
+                    {line.text}
+                  </p>
+                );
+                lastBlockIdx = line.block;
+              }
+              return elements;
+            })()}
+          </div>
+        </div>
+      </div>
+
+      {/* Hidden Album Container for Image Export */}
+      <div
+        ref={albumRef}
+        style={{
+          position: "fixed",
+          left: "-9999px",
+          top: "-9999px",
+          width: "1200px",
+          backgroundColor: "#F7F3EE", // Background cream
+          padding: "60px 40px",
+          color: "#7a6656",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+      >
+        <h1 style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "36px",
+          color: "hsl(var(--primary))",
+          letterSpacing: "4px",
+          textTransform: "uppercase",
+          marginBottom: "10px"
+        }}>
+          A Few Precious Moments 🌸
+        </h1>
+        <p style={{
+          fontFamily: "var(--font-handwriting)",
+          fontSize: "20px",
+          color: "#8c7b6e",
+          fontStyle: "italic",
+          marginBottom: "50px"
+        }}>
+          Saba, a year of gentle memories, captured forever... 🤍
+        </p>
+
+        {/* Polaroid Grid Layout */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "40px 30px",
+          width: "100%",
+          maxWidth: "1100px"
+        }}>
+          {albumImages.map((img, idx) => (
+            <div
+              key={idx}
+              style={{
+                backgroundColor: "#FCFAF2",
+                border: "1px solid rgba(212, 163, 89, 0.2)",
+                borderRadius: "12px",
+                padding: "20px 20px 24px 20px",
+                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.08)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                position: "relative"
+              }}
+            >
+              {/* Vintage tape top accent */}
+              <div style={{
+                position: "absolute",
+                top: "-6px",
+                left: "50%",
+                transform: "translateX(-50%) rotate(1deg)",
+                width: "70px",
+                height: "18px",
+                backgroundColor: "rgba(212, 163, 89, 0.12)",
+                borderRadius: "2px",
+                borderBottom: "1px solid rgba(212, 163, 89, 0.05)"
+              }} />
+
+              {/* Date stamp */}
+              <div style={{
+                position: "absolute",
+                top: "6px",
+                left: "12px",
+                fontSize: "10px",
+                fontFamily: "monospace",
+                color: "rgba(212, 163, 89, 0.7)"
+              }}>
+                {img.date}
+              </div>
+
+              {/* Image box - exact 3:4 aspect ratio */}
+              <div style={{
+                width: "100%",
+                aspectRatio: "3/4",
+                overflow: "hidden",
+                borderRadius: "8px",
+                border: "1px solid rgba(212, 163, 89, 0.1)",
+                backgroundColor: "#EFECE6",
+                marginTop: "16px",
+                marginBottom: "16px"
+              }}>
+                <img
+                  src={img.src}
+                  alt={img.caption}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover"
+                  }}
+                />
+              </div>
+
+              {/* Caption */}
+              <p style={{
+                fontFamily: "var(--font-handwriting)",
+                fontSize: "16px",
+                lineHeight: "22px",
+                margin: 0,
+                textAlign: "center",
+                fontStyle: "italic",
+                fontWeight: 500,
+                color: "#7a6656"
+              }}>
+                {img.caption}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

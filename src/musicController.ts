@@ -37,11 +37,20 @@ const BLOCK_TO_TRACK: Record<number, TrackInfo> = {
   // 14‑15 → complaint (seek 65 s on first activation)
   14: { id: "track14", src: "/Saiyaara – Barbaad _ Slowed Reverb.mp3", startSeek: 65 },
   15: { id: "track14", src: "/Saiyaara – Barbaad _ Slowed Reverb.mp3", startSeek: 65 },
-  // 16‑19 → duas
+  // 16‑28 → duas
   16: { id: "track16", src: "/kun_faya_kun.mp3" },
   17: { id: "track16", src: "/kun_faya_kun.mp3" },
   18: { id: "track16", src: "/kun_faya_kun.mp3" },
-  19: { id: "track16", src: "/kun_faya_kun.mp3" }
+  19: { id: "track16", src: "/kun_faya_kun.mp3" },
+  20: { id: "track16", src: "/kun_faya_kun.mp3" },
+  21: { id: "track16", src: "/kun_faya_kun.mp3" },
+  22: { id: "track16", src: "/kun_faya_kun.mp3" },
+  23: { id: "track16", src: "/kun_faya_kun.mp3" },
+  24: { id: "track16", src: "/kun_faya_kun.mp3" },
+  25: { id: "track16", src: "/kun_faya_kun.mp3" },
+  26: { id: "track16", src: "/kun_faya_kun.mp3" },
+  27: { id: "track16", src: "/kun_faya_kun.mp3" },
+  28: { id: "track16", src: "/kun_faya_kun.mp3" }
 };
 
 let currentTrackId: string | null = null; // ID of the currently active music track
