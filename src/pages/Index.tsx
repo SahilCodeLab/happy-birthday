@@ -471,7 +471,7 @@ const Index = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                className="relative z-10 w-full h-full flex flex-col items-center justify-center overflow-hidden"
+                className="relative z-10 w-full h-full flex flex-col items-center justify-center overflow-y-auto"
               >
                 {steps[currentStep]}
               </motion.div>

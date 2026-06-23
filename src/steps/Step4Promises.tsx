@@ -120,7 +120,7 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
   };
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col items-center justify-between py-3 sm:py-6 px-4 overflow-hidden z-10 select-none bg-gradient-to-b from-background via-cream-dark to-background">
+    <div className="relative w-full h-[100dvh] min-h-[100dvh] max-h-[100dvh] flex flex-col items-center justify-between py-3 sm:py-6 px-4 overflow-hidden z-10 select-none bg-gradient-to-b from-background via-cream-dark to-background">
       <FloatingCandles className="absolute bottom-0 left-0 right-0" />
       <FallingPetals />
 
@@ -170,7 +170,7 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
       </div>
 
       {/* Main Interactive Middle Area */}
-      <div className="w-full flex-1 flex items-center justify-center relative overflow-visible my-0 sm:my-1 -mt-[190px]">
+      <div className="w-full flex-1 flex items-center justify-center relative overflow-visible my-0 sm:my-1">
         <AnimatePresence mode="wait">
           {showIntro ? (
             <motion.div
@@ -425,8 +425,8 @@ export default function Step4Promises({ onNext, onPrev }: Step4Props) {
       </div>
 
       {/* Step Navigation Footer */}
-      <div className="absolute top-[610px] sm:top-auto sm:bottom-6 left-0 right-0 w-full max-w-[420px] mx-auto shrink-0 flex flex-col items-center space-y-2 z-10 pb-1 sm:pb-2 border-t border-primary/10 -mt-3 pt-1 sm:pt-2">
-        <div className="flex w-full items-center justify-between px-2 gap-4" style={{ marginTop: '-11px' }}>
+      <div className="relative w-full max-w-[420px] mx-auto shrink-0 flex flex-col items-center space-y-2 z-10 pb-2 sm:pb-4 border-t border-primary/10 pt-2">
+        <div className="flex w-full items-center justify-between px-2 gap-4">
           {onPrev && (
             <Button
               className="btn-paper flex-1 min-w-[80px] flex items-center justify-center gap-1.5 py-1 sm:py-2 text-[#7a6656] font-bold bg-cover bg-center bg-no-repeat text-sm sm:text-base whitespace-nowrap"

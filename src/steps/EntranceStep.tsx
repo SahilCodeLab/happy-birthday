@@ -160,7 +160,7 @@ const EntranceStep = ({ onNext }: EntranceStepProps) => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 3.5, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 1.5, ease: "easeOut" }}
           >
             <Button
               className="btn-paper flex items-center justify-center gap-1.5 py-2.5 sm:py-3 px-6 text-[#7a6656] font-bold text-base sm:text-lg min-w-[200px] bg-cover bg-center bg-no-repeat"
